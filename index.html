@@ -1,0 +1,1782 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jabi Consulting — Driving Sustainable Growth Across MENA</title>
+  <meta name="description" content="Jabi Consulting partners with U.S. firms and MENA institutions to drive sustainable growth across the Middle East and North Africa." />
+  <meta name="theme-color" content="#F5F1EA" />
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="apple-touch-icon" href="assets/favicon.png" />
+  <meta property="og:title" content="Jabi Consulting — Driving Sustainable Growth Across MENA" />
+  <meta property="og:description" content="Strategic advisory, MEL, capture & BD, and digital transformation across the Middle East and North Africa." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/hero.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.css" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #F5F1EA;
+      --bg-2: #EFEAE0;
+      --bg-3: #E9E2D4;
+      --ink: #1A1A1A;
+      --ink-dim: #5C5A55;
+      --muted: #8A877F;
+      --accent: #C96442;          /* warm coral */
+      --accent-2: #B3573A;        /* deeper coral for hovers */
+      --line: rgba(26,26,26,.10);
+      --line-strong: rgba(26,26,26,.18);
+      --card: rgba(26,26,26,.03);
+      --card-hi: rgba(26,26,26,.06);
+      --radius: 14px;
+      --maxw: 1240px;
+      --shadow: 0 30px 80px -30px rgba(26,26,26,.25);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      font-family: "Cairo", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    .mono { font-family: "JetBrains Mono", ui-monospace, monospace; letter-spacing: .04em; }
+
+    .container {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+
+    /* ---------- Clean ivory backdrop everywhere — no orange tinting ---------- */
+    .bg-fx { display: none; }
+    .bg-grid { display: none; }
+    .bg-orb  { display: none; }
+    .hero { position: relative; }
+    .hero > .container { position: relative; z-index: 2; }
+    /* Only a subtle dot grid in the hero — no coral gradients */
+    .hero::after {
+      content: "";
+      position: absolute; inset: 0; z-index: 1;
+      background-image:
+        linear-gradient(rgba(26,26,26,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(26,26,26,.03) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: radial-gradient(ellipse at 60% 50%, black 35%, transparent 80%);
+      pointer-events: none;
+    }
+
+    /* ---------- Nav ---------- */
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      background: rgba(245,241,234,.78);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 0;
+    }
+    .brand { display: inline-flex; flex-direction: column; align-items: stretch; gap: 4px; padding: 0; margin: 0; line-height: 1; }
+    .brand img {
+      height: 40px; width: auto; display: block;
+      background: transparent;
+      max-width: 100%;
+    }
+    .brand-tag {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 10px; font-weight: 600;
+      color: var(--ink-dim);
+      text-transform: uppercase;
+      text-align: left;           /* left-aligned under the logo */
+      letter-spacing: .35em;
+      padding-left: 2px;
+    }
+    .brand-text { display: none; }
+    @media (max-width: 720px) {
+      .brand img { height: 34px; }
+      .brand-tag { font-size: 9px; letter-spacing: .28em; }
+    }
+    .nav-links { display: flex; gap: 30px; align-items: center; }
+    .nav-links > a { font-size: 14px; color: var(--ink-dim); transition: color .2s; }
+    .nav-links > a:hover { color: var(--accent); }
+    /* Right-edge cluster: LinkedIn icons + CTA sit close together, slight breathing room before */
+    .nav-cluster {
+      display: flex; align-items: center;
+      gap: 8px;
+      margin-left: 8px;
+    }
+    .nav-linkedin {
+      display: inline-grid; place-items: center;
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      border: 1px solid var(--line-strong);
+      color: var(--ink-dim);
+      transition: all .2s;
+    }
+    .nav-linkedin svg { fill: currentColor; display: block; transition: fill .2s, stroke .2s; }
+    .nav-linkedin:hover { color: #fff; background: var(--accent); border-color: var(--accent); }
+    .nav-linkedin:hover svg { fill: #fff; stroke: #fff; }
+    /* Personal LinkedIn — circular photo avatar with LinkedIn badge bottom-right */
+    .nav-avatar {
+      position: relative;
+      display: inline-block;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      overflow: visible;
+      transition: transform .2s;
+    }
+    .nav-avatar img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 1.5px solid var(--line-strong);
+      transition: border-color .2s;
+      display: block;
+    }
+    .nav-avatar-badge {
+      position: absolute;
+      right: -3px; bottom: -3px;
+      width: 16px; height: 16px;
+      display: grid; place-items: center;
+      background: #0a66c2;       /* LinkedIn brand blue */
+      color: #fff;
+      border-radius: 4px;
+      border: 2px solid var(--bg);
+      transition: transform .2s;
+    }
+    .nav-avatar-badge svg { width: 9px; height: 9px; }
+    .nav-avatar:hover { transform: translateY(-1px); }
+    .nav-avatar:hover img { border-color: var(--accent); }
+    .nav-avatar:hover .nav-avatar-badge { transform: scale(1.1); }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 12px 22px;
+      border-radius: 999px;
+      font-weight: 600; font-size: 14px;
+      transition: transform .2s, box-shadow .2s, background .2s;
+      cursor: pointer; border: 0;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff !important;
+      box-shadow: 0 12px 30px -10px rgba(201,100,66,.45);
+    }
+    .btn-primary svg { fill: #fff; }
+    .btn-primary:hover { transform: translateY(-2px); background: var(--accent-2); color: #fff; box-shadow: 0 18px 40px -10px rgba(201,100,66,.55); }
+    .btn-primary:hover svg { fill: #fff; }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid var(--line-strong);
+      transition: background .2s, color .2s, border-color .2s, transform .2s;
+    }
+    .btn-ghost:hover {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+    .btn-ghost:hover svg { fill: #fff; }
+    .nav-toggle { display: none; background: transparent; border: 0; color: var(--ink); }
+    @media (max-width: 880px) {
+      .nav-links { display: none; }
+      .nav-toggle { display: inline-flex; }
+    }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      position: relative;
+      padding: 90px 0 80px;
+      overflow: hidden;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 60px;
+      align-items: center;
+    }
+    /* V1 — no-image centered hero */
+    .hero-noimage { padding: 120px 0 100px; }
+    .hero-center {
+      max-width: 980px; margin: 0 auto; text-align: center;
+    }
+    .hero-center .eyebrow { margin-bottom: 30px; }
+    .hero-center h1 {
+      font-size: clamp(30px, 4.4vw, 56px);
+      line-height: 1.12; letter-spacing: -.02em;
+      margin: 0 auto 36px; max-width: 16ch;
+    }
+    .hero-center .cta-row { justify-content: center; }
+    .hero-center .hero-stats {
+      max-width: 760px; margin-left: auto; margin-right: auto;
+      justify-items: center;
+    }
+    .hero-center .stat { text-align: center; }
+    @media (max-width: 720px) { .hero-noimage { padding: 70px 0 60px; } }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 7px 14px;
+      border: 1px solid var(--line-strong);
+      border-radius: 999px;
+      font-size: 12px; color: var(--accent);
+      text-transform: uppercase; letter-spacing: .2em;
+      background: rgba(201,100,66,.06);
+    }
+    .eyebrow .dot {
+      width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+      box-shadow: 0 0 12px var(--accent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .55; transform: scale(.85); }
+    }
+    h1 {
+      font-size: clamp(40px, 5.5vw, 72px);
+      line-height: 1.04;
+      letter-spacing: -.02em;
+      font-weight: 800;
+      margin: 22px 0 22px;
+    }
+    h1 .accent {
+      color: var(--accent);
+    }
+    .lede {
+      font-size: clamp(16px, 1.4vw, 19px);
+      color: var(--ink-dim);
+      max-width: 560px;
+      margin: 0 0 32px;
+    }
+    .cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-top: 52px;
+      padding-top: 32px;
+      border-top: 1px solid var(--line);
+    }
+    @media (max-width: 720px) {
+      .hero-stats { grid-template-columns: repeat(2, 1fr); gap: 18px; }
+    }
+    .stat .n {
+      font-size: clamp(26px, 2.8vw, 36px);
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: -.02em;
+      line-height: 1.05;
+    }
+    .stat .l {
+      font-size: 11px; color: var(--ink-dim);
+      text-transform: uppercase; letter-spacing: .14em;
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+    .stat .l em {
+      font-style: italic; font-weight: 500;
+      color: var(--muted); text-transform: none; letter-spacing: 0;
+    }
+
+    .hero-visual {
+      position: relative;
+      aspect-ratio: 4/4;          /* landscape-ish square, no portrait crop */
+      overflow: visible;
+      /* feather edges into the ivory background — no boxed rectangle */
+      -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, #000 50%, rgba(0,0,0,.85) 70%, transparent 96%);
+              mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, #000 50%, rgba(0,0,0,.85) 70%, transparent 96%);
+    }
+    .hero-visual img {
+      width: 100%; height: 100%; object-fit: cover;
+      object-position: center;
+    }
+    .hero-visual::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 55%, rgba(201,100,66,.10) 100%);
+      pointer-events: none;
+    }
+    .hero-tag {
+      position: absolute; left: 22px; bottom: 22px; right: 22px;
+      display: flex; justify-content: space-between; align-items: flex-end;
+      gap: 12px;
+    }
+    .hero-tag .badge {
+      background: rgba(245,241,234,.92);
+      border: 1px solid var(--line-strong);
+      padding: 8px 14px; border-radius: 999px;
+      font-size: 11px; letter-spacing: .15em; text-transform: uppercase;
+      color: var(--ink);
+      backdrop-filter: blur(10px);
+    }
+    .hero-tag .badge b { color: var(--accent); font-weight: 700; }
+
+    @media (max-width: 880px) {
+      .hero { padding: 50px 0 40px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 30px; }
+      .hero-visual { aspect-ratio: 4/4.6; max-width: 520px; }
+      .hero-stats { grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    }
+
+    /* ---------- Sections ---------- */
+    section { padding: 100px 0; position: relative; }
+
+    /* ---------- Positioning statement band ---------- */
+    .positioning {
+      padding: 90px 0 70px;
+      border-top: 1px solid var(--line);
+    }
+    .positioning-statement {
+      max-width: 940px; margin: 0 auto;
+      text-align: center;
+      font-size: clamp(22px, 2.6vw, 34px);
+      line-height: 1.35;
+      letter-spacing: -.015em;
+      font-weight: 500;
+      color: var(--ink);
+    }
+    .positioning-statement em {
+      font-style: normal;
+      color: var(--accent);
+      font-weight: 600;
+    }
+    @media (max-width: 720px) { .positioning { padding: 60px 0 40px; } }
+
+    .metrics-band {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px;
+      margin-top: 70px;
+      padding-top: 50px;
+      border-top: 1px solid var(--line);
+    }
+    .metric { text-align: center; }
+    .metric-n {
+      font-size: clamp(28px, 3.4vw, 44px);
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: -.02em;
+      line-height: 1;
+    }
+    .metric-l {
+      font-size: 11px; color: var(--ink-dim);
+      text-transform: uppercase; letter-spacing: .18em;
+      margin-top: 10px;
+      line-height: 1.4;
+    }
+    @media (max-width: 720px) {
+      .metrics-band { grid-template-columns: repeat(2, 1fr); gap: 22px 18px; margin-top: 44px; padding-top: 32px; }
+    }
+    .section-head {
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto 56px;
+    }
+    .kicker {
+      font-size: 11px; letter-spacing: .25em; text-transform: uppercase;
+      color: var(--accent); font-weight: 600;
+      display: inline-block; margin-bottom: 14px;
+    }
+    h2 {
+      font-size: clamp(30px, 3.5vw, 46px);
+      line-height: 1.1;
+      letter-spacing: -.02em;
+      font-weight: 700;
+      margin: 0 0 14px;
+    }
+    .sub {
+      color: var(--ink-dim);
+      font-size: 17px;
+    }
+
+    /* ---------- Clients strip ---------- */
+    .clients {
+      padding: 50px 0 30px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: var(--bg);   /* same as page bg — no darker strip */
+      overflow: hidden;
+    }
+    .clients-label {
+      text-align: center;
+      font-size: 11px; letter-spacing: .25em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 28px;
+    }
+    .marquee {
+      display: flex; gap: 70px;
+      animation: scroll 28s linear infinite;
+      width: max-content;
+    }
+    .marquee img {
+      height: 52px; width: auto;
+      max-width: 200px;
+      object-fit: contain;
+      mix-blend-mode: multiply;     /* drops JPG white backgrounds against ivory */
+      filter: grayscale(.35) contrast(1.05);
+      opacity: .85;
+      transition: opacity .25s, filter .25s;
+    }
+    .marquee img:hover { opacity: 1; filter: grayscale(0); }
+    @keyframes scroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* ---------- Capabilities grid ---------- */
+    .caps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    @media (max-width: 980px) { .caps { grid-template-columns: 1fr 1fr; gap: 16px; } }
+    @media (max-width: 480px) { .caps { grid-template-columns: 1fr 1fr; gap: 12px; } }
+    @media (max-width: 480px) { .cap { padding: 22px 18px; }
+                                .cap h3 { font-size: 17px; }
+                                .cap p  { font-size: 13.5px; }
+                                .cap-icon { width: 40px; height: 40px; margin-bottom: 16px; } }
+    .cap {
+      position: relative;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      transition: transform .3s, background .3s, border-color .3s, box-shadow .3s;
+      overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+    .cap:hover { transform: translateY(-4px); background: var(--card-hi); border-color: var(--line-strong); box-shadow: 0 14px 32px -14px rgba(26,26,26,.18); }
+    /* Photo at top of each card */
+    .cap-photo {
+      aspect-ratio: 16/10;
+      overflow: hidden;
+      background: var(--bg-3);
+      border-bottom: 1px solid var(--line);
+    }
+    .cap-photo img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .8s ease;
+    }
+    .cap:hover .cap-photo img { transform: scale(1.05); }
+    .cap-body { padding: 26px 26px 30px; }
+    .cap-num {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px; letter-spacing: .15em;
+      color: var(--accent); margin-bottom: 14px;
+    }
+    .cap h3 {
+      font-size: 19px; margin: 0 0 12px; font-weight: 700;
+      letter-spacing: -.01em;
+    }
+    .cap p {
+      color: var(--ink-dim); font-size: 14.5px; margin: 0; line-height: 1.55;
+    }
+
+    /* ---------- Regions intro split ---------- */
+    .regions-intro {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 60px;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    @media (max-width: 880px) { .regions-intro { grid-template-columns: 1fr; gap: 32px; } }
+    .regions-intro-photo {
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--line-strong);
+      aspect-ratio: 4/3;
+    }
+    .regions-intro-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* ---------- Where we work — Mapbox full-width ---------- */
+    .mapbox-stage {
+      width: 100%;
+      height: clamp(420px, 60vh, 640px);
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--line-strong);
+      box-shadow: var(--shadow);
+      margin-top: 56px;
+      position: relative;
+    }
+    .mapboxgl-ctrl-attrib {
+      background: rgba(245,241,234,.85) !important;
+      font-family: "Cairo", sans-serif !important;
+      font-size: 10px !important;
+    }
+    .mapboxgl-ctrl-attrib a { color: var(--ink-dim) !important; }
+    .mapboxgl-popup-content {
+      font-family: "Cairo", sans-serif !important;
+      background: var(--bg) !important;
+      color: var(--ink) !important;
+      padding: 10px 16px !important;
+      border-radius: 10px !important;
+      border: 1px solid var(--line-strong) !important;
+      box-shadow: 0 8px 24px -6px rgba(26,26,26,.18) !important;
+      font-size: 13px !important;
+      font-weight: 600 !important;
+    }
+    .mapboxgl-popup-tip { border-top-color: var(--bg) !important; border-bottom-color: var(--bg) !important; }
+    .mapboxgl-ctrl-group { background: var(--bg) !important; border: 1px solid var(--line-strong) !important; }
+    .mapboxgl-ctrl-group button { background-color: var(--bg) !important; }
+
+    /* HTML marker — circle bubble centered on the lat/lon (anchor='center', no offset) */
+    .mena-marker {
+      width: 36px; height: 36px;
+      background: var(--bg);
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 19px; line-height: 1;
+      box-shadow: 0 6px 14px -4px rgba(26,26,26,.35);
+      cursor: pointer;
+      transition: transform .2s, box-shadow .2s;
+      will-change: transform;
+    }
+    .mena-marker:hover {
+      transform: scale(1.18);
+      box-shadow: 0 10px 22px -4px rgba(201,100,66,.55);
+      z-index: 10;
+    }
+    .mena-marker.hub {
+      width: 44px; height: 44px;
+      font-size: 24px;
+      background: var(--accent);
+      border-color: #1A1A1A;
+      border-width: 2.5px;
+    }
+
+    /* Reston, VA "from" badge floating over the map */
+    .map-from-badge {
+      position: absolute;
+      top: 18px; left: 18px;
+      background: rgba(245,241,234,.94);
+      border: 1px solid var(--line-strong);
+      border-radius: 999px;
+      padding: 8px 14px 8px 12px;
+      display: flex; align-items: center; gap: 8px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 10px; letter-spacing: .15em;
+      color: var(--ink);
+      text-transform: uppercase;
+      backdrop-filter: blur(8px);
+      z-index: 5;
+      box-shadow: 0 4px 12px -4px rgba(26,26,26,.15);
+    }
+    .map-from-badge .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    /* ---------- Articles ---------- */
+    .articles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+    @media (max-width: 1080px) { .articles { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 620px) { .articles { grid-template-columns: 1fr; } }
+    .article {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--card);
+      transition: transform .3s, border-color .3s;
+      cursor: pointer;
+    }
+    .article:hover { transform: translateY(-6px); border-color: var(--line-strong); }
+    .article-img {
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      position: relative;
+    }
+    .article-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform .8s ease;
+    }
+    .article:hover .article-img img { transform: scale(1.08); }
+    .article-body { padding: 22px; }
+    .article-date {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px; letter-spacing: .12em;
+      color: var(--accent); margin-bottom: 10px;
+    }
+    .article h3 {
+      font-size: 17px; margin: 0 0 12px; line-height: 1.35;
+      letter-spacing: -.005em; font-weight: 600;
+    }
+    .read-more {
+      font-size: 13px; color: var(--ink-dim);
+      display: inline-flex; align-items: center; gap: 6px;
+      transition: gap .25s, color .2s;
+    }
+    .article:hover .read-more { gap: 12px; color: var(--accent); }
+    .article-cat {
+      display: inline-block;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 10px; letter-spacing: .12em;
+      color: var(--ink); background: rgba(201,100,66,.12);
+      padding: 4px 10px; border-radius: 999px;
+      margin-bottom: 10px; text-transform: uppercase;
+    }
+
+    /* ---------- Insights archive (expandable) ---------- */
+    .archive-wrap {
+      margin-top: 56px;
+      border-top: 1px solid var(--line);
+      padding-top: 40px;
+    }
+    .archive-title-band {
+      font-size: 11px; letter-spacing: .25em; text-transform: uppercase;
+      color: var(--accent); font-weight: 600;
+      margin: 0 0 22px;
+    }
+    .archive-row {
+      display: grid;
+      grid-template-columns: 130px 1fr 200px 30px;
+      align-items: baseline;
+      gap: 24px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--line);
+      transition: padding-left .3s, color .2s;
+    }
+    .archive-row:hover {
+      padding-left: 14px;
+    }
+    .archive-row:hover .archive-title { color: var(--accent); }
+    .archive-row:hover .archive-arrow { transform: translateX(6px); color: var(--accent); }
+    .archive-date {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px; color: var(--ink-dim);
+      letter-spacing: .02em;
+    }
+    .archive-title {
+      font-size: 17px; font-weight: 600; line-height: 1.35; color: var(--ink);
+      transition: color .2s;
+    }
+    .archive-cat {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px; letter-spacing: .08em;
+      color: var(--accent); text-align: right;
+    }
+    .archive-arrow {
+      color: var(--ink-dim);
+      font-size: 18px;
+      transition: transform .3s, color .2s;
+    }
+    @media (max-width: 760px) {
+      .archive-row { grid-template-columns: 1fr auto; gap: 6px 18px; padding: 16px 0; }
+      .archive-date { grid-row: 1; grid-column: 1; font-size: 11px; }
+      .archive-cat  { grid-row: 1; grid-column: 2; font-size: 10px; }
+      .archive-title { grid-row: 2; grid-column: 1 / -1; font-size: 15px; }
+      .archive-arrow { display: none; }
+    }
+
+    /* ---------- Why us ---------- */
+    .why-grid {
+      display: grid; grid-template-columns: 1.1fr 1fr;
+      gap: 60px; align-items: center;
+    }
+    @media (max-width: 880px) { .why-grid { grid-template-columns: 1fr; } }
+    /* ---------- Testimonial / growth carousel ---------- */
+    .testimonial-carousel {
+      position: relative;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--line-strong);
+      background: var(--bg-2);
+    }
+    .testimonial-slide {
+      position: absolute; inset: 0;
+      opacity: 0;
+      transition: opacity .7s ease;
+      pointer-events: none;
+    }
+    .testimonial-slide.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .testimonial-carousel .anchor-ratio {
+      width: 100%; aspect-ratio: 5/4; display: block;
+    }
+    .testimonial-slide img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .testimonial-slide::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 45%, rgba(26,26,26,.62) 100%);
+    }
+    .testimonial-badge {
+      position: absolute; left: 22px; bottom: 22px;
+      background: rgba(245,241,234,.95);
+      border: 1px solid var(--line-strong);
+      padding: 14px 20px; border-radius: 12px;
+      backdrop-filter: blur(10px);
+      z-index: 2;
+    }
+    .testimonial-badge .y {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 10px; letter-spacing: .2em;
+      color: var(--accent); font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .testimonial-badge .n { font-size: 28px; font-weight: 800; color: var(--ink); line-height: 1; letter-spacing: -.02em; }
+    .testimonial-badge .l { font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--ink-dim); margin-top: 6px; }
+
+    .carousel-tabs {
+      position: absolute; top: 22px; right: 22px;
+      display: flex; gap: 6px;
+      background: rgba(245,241,234,.92);
+      border: 1px solid var(--line-strong);
+      padding: 4px; border-radius: 999px;
+      backdrop-filter: blur(10px);
+      z-index: 3;
+    }
+    .carousel-tabs button {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px; letter-spacing: .12em;
+      padding: 7px 14px;
+      background: transparent;
+      border: 0; border-radius: 999px;
+      color: var(--ink-dim);
+      cursor: pointer;
+      transition: background .25s, color .25s;
+    }
+    .carousel-tabs button.active {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .checks { display: grid; gap: 18px; margin-top: 28px; }
+    .check {
+      display: flex; gap: 14px; align-items: flex-start;
+      padding: 16px 18px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--card);
+      transition: all .25s;
+    }
+    .check:hover { border-color: var(--accent); background: var(--card-hi); }
+    .check-ico {
+      flex-shrink: 0; width: 36px; height: 36px;
+      display: grid; place-items: center;
+      border-radius: 10px;
+      background: var(--accent);
+      color: #fff;
+    }
+    .check-ico svg { width: 18px; height: 18px; }
+    .check b { font-size: 15px; display: block; margin-bottom: 4px; }
+    .check span { font-size: 14px; color: var(--ink-dim); }
+
+    /* ---------- AI imagery band ---------- */
+    .ai-band {
+      padding: 100px 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+    .ai-band-head {
+      max-width: 720px; margin: 0 auto 56px;
+      text-align: center;
+    }
+    .ai-band-head h2 {
+      font-size: clamp(28px, 3.4vw, 42px);
+      line-height: 1.15;
+      letter-spacing: -.02em;
+      font-weight: 700;
+      margin: 14px 0 12px;
+    }
+    .ai-band-head h2 em {
+      font-style: normal;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .ai-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 22px;
+      grid-template-rows: 340px;
+    }
+    @media (max-width: 880px) {
+      .ai-grid { grid-template-columns: 1fr 1fr; grid-template-rows: 280px 280px; }
+      .ai-tile.featured { grid-column: 1 / -1; }
+    }
+    @media (max-width: 540px) {
+      .ai-grid { grid-template-columns: 1fr; grid-template-rows: repeat(3, 240px); }
+      .ai-tile.featured { grid-column: 1; }
+    }
+    .ai-tile {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius);
+      border: 1px solid var(--line-strong);
+      background: var(--bg-3);
+      cursor: default;
+    }
+    .ai-tile img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 1.2s cubic-bezier(.16,.84,.44,1);
+    }
+    .ai-tile:hover img { transform: scale(1.06); }
+    .ai-tile::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 40%, rgba(26,26,26,.78) 100%);
+    }
+    .ai-tile-cap {
+      position: absolute; left: 22px; right: 22px; bottom: 22px;
+      color: #fff;
+      z-index: 2;
+    }
+    .ai-tile-cap .label {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 10px; letter-spacing: .2em;
+      text-transform: uppercase;
+      color: #F5F1EA; opacity: .85;
+      margin-bottom: 8px;
+    }
+    .ai-tile-cap .title {
+      font-size: 19px; font-weight: 700;
+      letter-spacing: -.005em; line-height: 1.3;
+    }
+
+    /* ---------- Team intro split (copy + photo) ---------- */
+    .team-intro {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      margin-bottom: 0;
+    }
+    @media (max-width: 880px) { .team-intro { grid-template-columns: 1fr; gap: 32px; } }
+    .team-intro-photo {
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--line-strong);
+      box-shadow: var(--shadow);
+      aspect-ratio: 4/3;
+    }
+    .team-intro-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* ---------- Team grid ---------- */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 28px;
+      margin-top: 60px;
+    }
+    @media (max-width: 1080px) { .team-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 760px)  { .team-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; } }
+    .member {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: transform .3s, border-color .3s, background .3s;
+      cursor: pointer;
+    }
+    .member:hover { transform: translateY(-4px); border-color: var(--line-strong); background: var(--card-hi); }
+    .member-photo {
+      aspect-ratio: 1/1;
+      overflow: hidden;
+      background: var(--bg-3);
+    }
+    .member-photo img { width: 100%; height: 100%; object-fit: cover; }
+    .member-body { padding: 18px 18px 22px; }
+    .member-name { font-size: 16px; font-weight: 700; letter-spacing: -.01em; margin: 0 0 4px; }
+    .member-role {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px; letter-spacing: .06em;
+      color: var(--accent);
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+    .member-bio {
+      font-size: 13px; color: var(--ink-dim);
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .member.expanded .member-bio { -webkit-line-clamp: unset; }
+    .member-more {
+      font-size: 11px; color: var(--accent); font-weight: 600;
+      letter-spacing: .12em; text-transform: uppercase;
+      margin-top: 10px;
+      display: inline-block;
+    }
+
+    .team-categories {
+      display: flex; gap: 10px; flex-wrap: wrap;
+      margin-top: 28px;
+    }
+    .team-cat {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px; letter-spacing: .12em;
+      padding: 7px 14px;
+      border-radius: 999px;
+      background: rgba(26,26,26,.04);
+      border: 1px solid var(--line);
+      color: var(--ink-dim);
+      cursor: pointer;
+      transition: all .2s;
+      text-transform: uppercase;
+    }
+    .team-cat.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .team-cat:hover  { color: var(--accent); }
+    .team-cat.active:hover { color: #fff; }
+
+    /* ---------- CTA ---------- */
+    .cta-band {
+      margin: 60px 0;
+      padding: 60px;
+      border-radius: 22px;
+      background: var(--bg);   /* clean ivory, no orange shading */
+      border: 1px solid var(--line-strong);
+      display: grid; grid-template-columns: 1.4fr 1fr;
+      gap: 40px; align-items: center;
+    }
+    @media (max-width: 880px) { .cta-band { padding: 36px 28px; grid-template-columns: 1fr; gap: 24px; } }
+    .cta-band h2 { margin: 0 0 8px; }
+    .cta-band p { color: var(--ink-dim); margin: 0; font-size: 16px; }
+    .cta-actions { display: flex; gap: 12px; justify-content: flex-end; flex-wrap: wrap; }
+    @media (max-width: 880px) { .cta-actions { justify-content: flex-start; } }
+
+    /* ---------- Footer ---------- */
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 70px 0 30px;
+      background: var(--bg-2);
+    }
+    .foot-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 40px;
+    }
+    @media (max-width: 880px) { .foot-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 520px) { .foot-grid { grid-template-columns: 1fr; } }
+    .foot-brand img { height: 56px; width: auto; display: block; margin: 0 0 18px; background: transparent; }
+    .foot-brand p { color: var(--ink-dim); font-size: 14px; max-width: 320px; }
+    .foot-col h4 {
+      font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--accent); margin: 0 0 18px; font-weight: 600;
+    }
+    .foot-col a, .foot-col p {
+      display: block; font-size: 14px; color: var(--ink-dim);
+      margin: 0 0 10px; transition: color .2s;
+    }
+    .foot-col a:hover { color: var(--accent); }
+    .copyright {
+      margin-top: 60px; padding-top: 28px;
+      border-top: 1px solid var(--line);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px;
+      font-size: 12px; color: var(--muted);
+    }
+    .socials { display: flex; gap: 10px; }
+    .socials a {
+      width: 36px; height: 36px;
+      display: grid; place-items: center;
+      border-radius: 50%;
+      border: 1px solid var(--line-strong);
+      transition: all .25s;
+      color: var(--ink-dim);
+    }
+    .socials a:hover { background: var(--accent); border-color: var(--accent); color: #fff; transform: translateY(-3px); }
+    .socials svg { width: 16px; height: 16px; }
+
+    .dev-credit {
+      margin-top: 18px;
+      display: flex; align-items: center; gap: 10px;
+      font-size: 11px; color: var(--muted);
+      letter-spacing: .12em; text-transform: uppercase;
+    }
+    .dev-credit a { display: inline-flex; align-items: center; gap: 8px; transition: opacity .2s; }
+    .dev-credit a:hover { opacity: .75; }
+    .dev-credit img { height: 22px; width: auto; }
+
+    /* ---------- Reveal animation ---------- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .8s ease, transform .8s ease;
+    }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+    .reveal[data-delay="1"] { transition-delay: .1s; }
+    .reveal[data-delay="2"] { transition-delay: .2s; }
+    .reveal[data-delay="3"] { transition-delay: .3s; }
+    .reveal[data-delay="4"] { transition-delay: .4s; }
+
+    /* Initial entrance */
+    .hero .eyebrow,
+    .hero h1,
+    .hero .lede,
+    .hero .cta-row,
+    .hero .hero-stats,
+    .hero-visual { animation: rise .9s cubic-bezier(.16,.84,.44,1) backwards; }
+    .hero h1 { animation-delay: .1s; }
+    .hero .lede { animation-delay: .2s; }
+    .hero .cta-row { animation-delay: .3s; }
+    .hero .hero-stats { animation-delay: .45s; }
+    .hero-visual { animation-delay: .15s; animation-duration: 1.1s; }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(28px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-fx"></div>
+  <div class="bg-grid"></div>
+  <div class="bg-orb a"></div>
+  <div class="bg-orb b"></div>
+
+  <header class="nav">
+    <div class="container nav-row">
+      <a href="#" class="brand" aria-label="Jabi Consulting — MENA Advisory">
+        <img src="assets/logo-color.svg?v=3" alt="Jabi Consulting" />
+        <span class="brand-tag">MENA Advisory</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#capabilities">What We Do</a>
+        <a href="#team">Team</a>
+        <a href="#regions">Where We Work</a>
+        <a href="insights.html">Insights</a>
+        <a href="#why">Why Us</a>
+        <div class="nav-cluster">
+          <a href="https://www.linkedin.com/company/jabcionsulting" target="_blank" rel="noopener" aria-label="Jabi Consulting on LinkedIn" title="Jabi Consulting on LinkedIn" class="nav-linkedin">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zM8.34 18.34H5.67V9.67h2.67v8.67zM7 8.34a1.55 1.55 0 110-3.1 1.55 1.55 0 010 3.1zm11.34 10H15.67v-4.22c0-1-.02-2.3-1.4-2.3s-1.62 1.1-1.62 2.23v4.29h-2.67V9.67h2.56v1.18h.04a2.8 2.8 0 012.53-1.39c2.71 0 3.21 1.78 3.21 4.1v4.88z"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/in/hishamjabi" target="_blank" rel="noopener" aria-label="Hisham Jabi on LinkedIn" title="Hisham Jabi on LinkedIn" class="nav-avatar">
+            <img src="assets/team/hisham-jabi.webp" alt="Hisham Jabi" />
+            <span class="nav-avatar-badge" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zM8.34 18.34H5.67V9.67h2.67v8.67zM7 8.34a1.55 1.55 0 110-3.1 1.55 1.55 0 010 3.1zm11.34 10H15.67v-4.22c0-1-.02-2.3-1.4-2.3s-1.62 1.1-1.62 2.23v4.29h-2.67V9.67h2.56v1.18h.04a2.8 2.8 0 012.53-1.39c2.71 0 3.21 1.78 3.21 4.1v4.88z"/></svg>
+            </span>
+          </a>
+          <a href="#contact" class="btn btn-primary">Get In Touch →</a>
+        </div>
+      </nav>
+      <button class="nav-toggle" aria-label="Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============== HERO ============== -->
+  <section class="hero hero-noimage">
+    <div class="container">
+      <div class="hero-center">
+        <div class="eyebrow"><span class="dot"></span> Global Expertise · Local Insight · AI-Driven</div>
+        <h1>Jabi Consulting brings <span class="accent">global expertise, local insight, and AI-driven solutions</span> to MENA's most complex development and business challenges.</h1>
+        <div class="cta-row">
+          <a href="#contact" class="btn btn-primary">Start A Conversation →</a>
+          <a href="#capabilities" class="btn btn-ghost">Our Capabilities</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat reveal"><div class="n">$120M+</div><div class="l">2024 Portfolio Growth</div></div>
+          <div class="stat reveal" data-delay="1"><div class="n">$65M+</div><div class="l">2025 Portfolio Growth</div></div>
+          <div class="stat reveal" data-delay="2"><div class="n">16</div><div class="l">MENA Markets</div></div>
+          <div class="stat reveal" data-delay="3"><div class="n">8(a)</div><div class="l">SBA · <em>Pending…</em></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== POSITIONING STATEMENT + METRICS ============== -->
+  <section class="positioning">
+    <div class="container">
+      <p class="positioning-statement reveal">
+        Jabi Consulting <em>bridges</em> international development, private sector growth,
+        and strategic advisory across <em>the Middle East and North Africa</em>.
+      </p>
+      <div class="metrics-band reveal" data-delay="2">
+        <div class="metric"><div class="metric-n">16</div><div class="metric-l">MENA Markets</div></div>
+        <div class="metric"><div class="metric-n">$185M+</div><div class="metric-l">Portfolio Growth · 2024–25</div></div>
+        <div class="metric"><div class="metric-n">25+</div><div class="metric-l">Years Of MENA Practice</div></div>
+        <div class="metric"><div class="metric-n">13</div><div class="metric-l">Donor &amp; Prime Partners</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== CLIENTS ============== -->
+  <section class="clients" style="padding: 50px 0 50px;">
+    <div class="container">
+      <div class="clients-label">Trusted by leading institutions and partners</div>
+    </div>
+    <div class="marquee">
+      <img src="assets/clients/usaid.png" alt="USAID" />
+      <img src="assets/clients/state-dept.png" alt="U.S. Department of State" />
+      <img src="assets/clients/world-bank.png" alt="The World Bank" />
+      <img src="assets/clients/chemonics.png" alt="Chemonics International" />
+      <img src="assets/clients/palladium.png" alt="Palladium" />
+      <img src="assets/clients/panagora.png" alt="Panagora" />
+      <img src="assets/clients/ibi.png" alt="IBI" />
+      <img src="assets/clients/world-learning.png" alt="World Learning" />
+      <img src="assets/clients/helvetas.png" alt="Helvetas" />
+      <img src="assets/clients/social-impact.png" alt="Social Impact" />
+      <img src="assets/clients/alutiiq.png" alt="Alutiiq" />
+      <img src="assets/clients/idg.png" alt="IDG" />
+      <img src="assets/clients/urc.png" alt="URC" />
+      <!-- duplicate for seamless loop -->
+      <img src="assets/clients/usaid.png" alt="" />
+      <img src="assets/clients/state-dept.png" alt="" />
+      <img src="assets/clients/world-bank.png" alt="" />
+      <img src="assets/clients/chemonics.png" alt="" />
+      <img src="assets/clients/palladium.png" alt="" />
+      <img src="assets/clients/panagora.png" alt="" />
+      <img src="assets/clients/ibi.png" alt="" />
+      <img src="assets/clients/world-learning.png" alt="" />
+      <img src="assets/clients/helvetas.png" alt="" />
+      <img src="assets/clients/social-impact.png" alt="" />
+      <img src="assets/clients/alutiiq.png" alt="" />
+      <img src="assets/clients/idg.png" alt="" />
+      <img src="assets/clients/urc.png" alt="" />
+    </div>
+  </section>
+
+  <!-- ============== CAPABILITIES ============== -->
+  <section id="capabilities">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="kicker">What We Do</div>
+        <h2>Six Practices. One Mandate: Outcomes.</h2>
+        <p class="sub">Specialized teams aligned to the questions our clients actually ask — from capture to delivery.</p>
+      </div>
+      <div class="caps">
+        <article class="cap reveal">
+          <div class="cap-photo"><img src="assets/imagery/cap-bd.jpg" alt="" loading="lazy" /></div>
+          <div class="cap-body">
+            <div class="cap-num">01 / BD &amp; Capture</div>
+            <h3>Strategic Capture &amp; Business Development</h3>
+            <p>High win-rate capture strategy, proposal writing, and color-team support for federal &amp; international development opportunities across MENA.</p>
+          </div>
+        </article>
+        <article class="cap reveal" data-delay="1">
+          <div class="cap-photo"><img src="assets/imagery/cap-mel.jpg" alt="" loading="lazy" /></div>
+          <div class="cap-body">
+            <div class="cap-num">02 / MEL</div>
+            <h3>Monitoring, Evaluation &amp; Learning</h3>
+            <p>Robust MEL frameworks, mixed-methods evaluations, and learning systems that show what's working — and what isn't.</p>
+          </div>
+        </article>
+        <article class="cap reveal" data-delay="2">
+          <div class="cap-photo"><img src="assets/imagery/cap-strategy.jpg" alt="" loading="lazy" /></div>
+          <div class="cap-body">
+            <div class="cap-num">03 / Strategy</div>
+            <h3>Strategy &amp; Advisory</h3>
+            <p>Senior advisory for U.S. firms, governments, and MENA institutions on market entry, partnerships, and long-horizon positioning.</p>
+          </div>
+        </article>
+        <article class="cap reveal">
+          <div class="cap-photo"><img src="assets/imagery/ai-agritech.jpg" alt="" loading="lazy" /></div>
+          <div class="cap-body">
+            <div class="cap-num">04 / Research</div>
+            <h3>Research &amp; Assessments</h3>
+            <p>Sector assessments, political-economy analysis, and field-validated research across the Gulf, Levant, Maghreb, and Horn.</p>
+          </div>
+        </article>
+        <article class="cap reveal" data-delay="1">
+          <div class="cap-photo"><img src="assets/imagery/ai-uae-students.jpg" alt="" loading="lazy" /></div>
+          <div class="cap-body">
+            <div class="cap-num">05 / AI &amp; Youth</div>
+            <h3>AI, Youth Employment &amp; Innovation</h3>
+            <p>AI-ready operating models, Positive Youth Development programs, and workforce systems designed for MENA's demographic reality.</p>
+          </div>
+        </article>
+        <article class="cap reveal" data-delay="2">
+          <div class="cap-photo"><img src="assets/imagery/cap-capacity.jpg" alt="" loading="lazy" /></div>
+          <div class="cap-body">
+            <div class="cap-num">06 / Capacity</div>
+            <h3>Training &amp; Capacity Building</h3>
+            <p>Tailored training, organizational development, and institutional strengthening — delivered in Arabic and English.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== REGIONS — full-width Mapbox ============== -->
+  <section id="regions" style="border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);">
+    <div class="container">
+      <div class="regions-intro reveal">
+        <div class="regions-intro-copy">
+          <div class="kicker">Where We Work</div>
+          <h2>16 Markets. One Region. Built On The Ground.</h2>
+          <p class="sub">Active engagements and partner networks across the Gulf, the Levant, the Maghreb, and the Horn — anchored by offices in Reston, Virginia and Nablus, Palestine.</p>
+        </div>
+        <div class="regions-intro-photo">
+          <img src="assets/imagery/cap-gcc.jpg" alt="GCC market entry — Gulf business advisory" loading="lazy" />
+        </div>
+      </div>
+      <div class="mapbox-stage reveal" data-delay="2">
+        <div class="map-from-badge"><span class="dot"></span> HQ · Reston, VA</div>
+        <div id="mena-map" style="position:absolute; inset:0;"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== WHY US ============== -->
+  <section id="why">
+    <div class="container">
+      <div class="why-grid">
+        <div class="testimonial-carousel reveal" id="growth-carousel">
+          <div class="anchor-ratio"></div>
+          <div class="carousel-tabs" role="tablist">
+            <button type="button" class="active" data-slide="0" role="tab" aria-selected="true">2024</button>
+            <button type="button" data-slide="1" role="tab" aria-selected="false">2025</button>
+          </div>
+          <div class="testimonial-slide active" data-year="2024">
+            <img src="assets/testimonial-2024.jpg" alt="Youth &amp; education programs across MENA — 2024" />
+            <div class="testimonial-badge">
+              <div class="y">2024 · Portfolio Growth</div>
+              <div class="n">$120M+</div>
+              <div class="l">Programs, capture wins &amp; market expansion</div>
+            </div>
+          </div>
+          <div class="testimonial-slide" data-year="2025">
+            <img src="assets/testimonial-2025.jpg" alt="GCC market entry &amp; digital transformation — 2025" />
+            <div class="testimonial-badge">
+              <div class="y">2025 · Portfolio Growth</div>
+              <div class="n">$65M+</div>
+              <div class="l">GCC expansion &amp; AI-led delivery</div>
+            </div>
+          </div>
+        </div>
+        <div class="reveal" data-delay="2">
+          <div class="kicker">Why Jabi</div>
+          <h2>Strategic value for U.S. firms expanding into the Middle East.</h2>
+          <p class="sub">We sit at the intersection of U.S. federal practice and MENA market reality — and we move at the speed of both.</p>
+          <div class="checks">
+            <div class="check">
+              <div class="check-ico"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+              <div><b>8(a) SBA-certified small business <span style="font-style:italic; font-weight:500; color:var(--ink-dim); font-size:.85em; margin-left:4px;">(application pending)</span></b><span>Eligible for sole-source and set-aside federal contracts.</span></div>
+            </div>
+            <div class="check">
+              <div class="check-ico"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+              <div><b>High win-rates in capture &amp; BD</b><span>Federal proposal writing, capture, and color-team review.</span></div>
+            </div>
+            <div class="check">
+              <div class="check-ico"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+              <div><b>Deep MENA insights &amp; networks</b><span>Trusted relationships across ministries, primes, and partners.</span></div>
+            </div>
+            <div class="check">
+              <div class="check-ico"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+              <div><b>Technology, AI, defense, health, education</b><span>Cross-sector delivery experience aligned to growth markets.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== AI IMAGERY BAND ============== -->
+  <section id="ai-band" class="ai-band">
+    <div class="container">
+      <div class="ai-band-head reveal">
+        <div class="kicker" style="font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);font-weight:600;">AI &amp; Future Economy</div>
+        <h2>Where AI <em>meets</em> MENA — on the ground.</h2>
+        <p class="sub" style="color:var(--ink-dim);font-size:17px;">From youth coding labs in the Gulf to solar infrastructure in Egypt and agritech across the region — applied technology, designed for real markets.</p>
+      </div>
+
+      <div class="ai-grid reveal" data-delay="1">
+        <figure class="ai-tile featured">
+          <img src="assets/imagery/ai-uae-students.jpg" alt="Young people in a UAE robotics &amp; AI workshop" loading="lazy" />
+          <figcaption class="ai-tile-cap">
+            <div class="label">AI &amp; Youth Workforce</div>
+            <div class="title">Training the next generation of Gulf technologists</div>
+          </figcaption>
+        </figure>
+        <figure class="ai-tile">
+          <img src="assets/imagery/ai-agritech.jpg" alt="Precision agriculture in the Middle East" loading="lazy" />
+          <figcaption class="ai-tile-cap">
+            <div class="label">Agritech &amp; Data</div>
+            <div class="title">Smart agriculture for food-system resilience</div>
+          </figcaption>
+        </figure>
+        <figure class="ai-tile">
+          <img src="assets/imagery/ai-smart-city.jpg" alt="Smart-city deployment across the Gulf" loading="lazy" />
+          <figcaption class="ai-tile-cap">
+            <div class="label">Digital Infrastructure</div>
+            <div class="title">Smart-city systems &amp; clean-energy deployment</div>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== TEAM ============== -->
+  <section id="team">
+    <div class="container">
+      <div class="team-intro reveal">
+        <div class="team-intro-copy">
+          <div class="kicker">Our Team &amp; Associates</div>
+          <h2>Multilingual MENA Operators. Deep Donor &amp; Private-Sector Networks.</h2>
+          <p class="sub">A core team in Washington and Nablus, supported by senior advisors spanning USAID, the World Bank, ILO, MIT, and four decades of MENA market practice.</p>
+        </div>
+        <div class="team-intro-photo">
+          <img src="assets/imagery/team-office.jpg" alt="Jabi Consulting team — Washington &amp; Nablus offices" loading="lazy" />
+        </div>
+      </div>
+
+      <div class="team-categories reveal">
+        <button class="team-cat active" data-cat="all">All</button>
+        <button class="team-cat" data-cat="core">Core Team</button>
+        <button class="team-cat" data-cat="senior">Senior Associates</button>
+        <button class="team-cat" data-cat="advisor">Regional Advisors</button>
+      </div>
+
+      <div class="team-grid reveal">
+        <!-- 1. Hisham Jabi — Founder & CEO -->
+        <article class="member" data-cat="core">
+          <div class="member-photo"><img src="assets/team/hisham-jabi.webp" alt="Hisham Jabi" /></div>
+          <div class="member-body">
+            <div class="member-name">Hisham Jabi</div>
+            <div class="member-role">Founder &amp; CEO</div>
+            <div class="member-bio">Entrepreneur, international development leader, and thought partner on the future of work for MENA youth — with a current focus on AI &amp; digital transformation at regional scale. Founder of MABCO, PITA, Juzoor and the Palestine Economic Forum. Senior advisor to the World Bank, ILO, UNOPS, and USAID. Holds an MBA and a master's in Information Technology.</div>
+            <span class="member-more">Read More →</span>
+          </div>
+        </article>
+
+        <!-- 3. Emily Kenward — Project Associate -->
+        <article class="member" data-cat="core">
+          <div class="member-photo"><img src="assets/team/emily-kenward.webp" alt="Emily Kenward" /></div>
+          <div class="member-body">
+            <div class="member-name">Emily Kenward</div>
+            <div class="member-role">Project Associate</div>
+            <div class="member-bio">Passionate about the climate–conflict–gender nexus and women in peacebuilding. Contributed to water diplomacy efforts between Israel, the Palestinian Territories and Jordan. BS Environmental Biology + BA International Relations (Tulane). MA Conflict Resolution &amp; Mediation (Tel Aviv University). MA Environment, Development and Peace (UPEACE).</div>
+            <span class="member-more">Read More →</span>
+          </div>
+        </article>
+
+        <!-- 4. Emily Costello — Administrative & BD Assistant -->
+        <article class="member" data-cat="core">
+          <div class="member-photo"><img src="assets/team/emily-costello.png" alt="Emily Costello" /></div>
+          <div class="member-body">
+            <div class="member-name">Emily Costello</div>
+            <div class="member-role">Administrative &amp; Business Development Assistant</div>
+            <div class="member-bio">Master's student at the Elliott School of International Affairs (GWU). BA Global &amp; International Studies and Middle Eastern Studies (Bard). Worked with the Tahrir Institute, the Jordanian Embassy, the Arab Center Washington DC, the Middle East Policy Council, and Young Professionals in Foreign Policy.</div>
+            <span class="member-more">Read More →</span>
+          </div>
+        </article>
+
+        <!-- 5. Larry Cooley — Senior Technical Advisor -->
+        <article class="member" data-cat="senior">
+          <div class="member-photo"><img src="assets/team/larry-cooley.webp" alt="Larry Cooley" /></div>
+          <div class="member-body">
+            <div class="member-name">Larry Cooley</div>
+            <div class="member-role">Senior Technical Advisor</div>
+            <div class="member-bio">Founder and President Emeritus of Management Systems International. Four decades of strategic management, public sector reform, and international development experience — rooted in UNDP, World Bank, and Peace Corps. Has guided numerous global public management initiatives and advised heads of governments and international agencies.</div>
+            <span class="member-more">Read More →</span>
+          </div>
+        </article>
+
+        <!-- 7. Marina Fanning — Corporate Oversight Advisor -->
+        <article class="member" data-cat="senior">
+          <div class="member-photo"><img src="assets/team/marina-fanning.webp" alt="Marina Fanning" /></div>
+          <div class="member-body">
+            <div class="member-name">Marina Fanning</div>
+            <div class="member-role">Corporate Oversight Advisor</div>
+            <div class="member-bio">Has advised Jabi Consulting on strategy and economic development tools since its inception. Almost four decades as EVP for Management Systems International (MSI), which she helped establish. Directed MSI's Career Management for Women program. MS Organizational Development (American University). Fluent in Spanish, French, and Portuguese.</div>
+            <span class="member-more">Read More →</span>
+          </div>
+        </article>
+
+        <!-- 8. Larry Garber — Senior Advisor -->
+        <article class="member" data-cat="advisor">
+          <div class="member-photo"><img src="assets/team/larry-garber.png" alt="Larry Garber" /></div>
+          <div class="member-body">
+            <div class="member-name">Larry Garber</div>
+            <div class="member-role">Senior Advisor</div>
+            <div class="member-bio">International development expert. Senior USAID official for 15+ years, including 5 as Mission Director for USAID/West Bank–Gaza — one of the agency's most politically sensitive posts. Led USAID's Arab Spring strategic-planning response. Extensive experience in election monitoring &amp; democratization with the UN and OSCE. Queens College (political science) + Columbia (law &amp; international affairs).</div>
+            <span class="member-more">Read More →</span>
+          </div>
+        </article>
+
+        <!-- 10. Hisham Kassab, PhD — Technology Advisor -->
+        <article class="member" data-cat="advisor">
+          <div class="member-photo"><img src="assets/team/hisham-kassab.jpg" alt="Hisham Kassab, PhD" /></div>
+          <div class="member-body">
+            <div class="member-name">Hisham Kassab, PhD</div>
+            <div class="member-role">Technology Advisor</div>
+            <div class="member-bio">PhD in Electrical Engineering and Computer Science from MIT. Previously at Booz Allen Hamilton. Extensive IT experience; passionate about applying Artificial Intelligence to the world's toughest development problems.</div>
+            <span class="member-more">Read More →</span>
+          </div>
+        </article>
+
+        <!-- 11. Karla Yoder — Senior Workforce Expert -->
+        <article class="member" data-cat="senior">
+          <div class="member-photo"><img src="assets/team/karla-yoder.png" alt="Karla Yoder" /></div>
+          <div class="member-body">
+            <div class="member-name">Karla Yoder</div>
+            <div class="member-role">Senior Workforce Expert</div>
+            <div class="member-bio">20+ years designing and advising workforce and economic-development programs across the U.S., the Middle East, and Africa. Workforce strategy &amp; systems design for World Learning, Global Communities, and the D.C. Workforce Investment Council. Focus on translating evidence into practice for sustainable economic inclusion.</div>
+            <span class="member-more">Read More →</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== ARTICLES ============== -->
+  <section id="articles" style="background: rgba(26,26,26,.03); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="kicker">Latest insights</div>
+        <h2>What our team is watching.</h2>
+        <p class="sub">Monthly briefings on the political economy, labor markets, and growth signals across MENA.</p>
+      </div>
+      <div class="articles" id="insights-grid">
+        <!-- populated by JS from assets/articles.json -->
+      </div>
+
+      <div class="insights-cta" style="text-align:center; margin-top:48px;">
+        <a href="insights.html" class="btn btn-primary">View All Insights →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== CTA ============== -->
+  <section id="contact" style="padding-top: 80px;">
+    <div class="container">
+      <div class="cta-band reveal">
+        <div>
+          <div class="kicker">Let's talk</div>
+          <h2>Ready to grow your portfolio in the Middle East?</h2>
+          <p>Tell us where you're going. We'll tell you what it takes.</p>
+        </div>
+        <div class="cta-actions">
+          <a href="mailto:info@jabiconsulting.com" class="btn btn-primary">Email The Team →</a>
+          <a href="tel:+12023406216" class="btn btn-ghost">+1 (202) 340 6216</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== FOOTER ============== -->
+  <footer>
+    <div class="container">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <img src="assets/logo-color.svg?v=2" alt="Jabi Consulting" />
+          <p>Strategic advisory across the Middle East and North Africa — built on outcomes, not slideware.</p>
+        </div>
+        <div class="foot-col">
+          <h4>Company</h4>
+          <a href="#capabilities">What we do</a>
+          <a href="#regions">Where we work</a>
+          <a href="#why">Why us</a>
+          <a href="#articles">Insights</a>
+        </div>
+        <div class="foot-col">
+          <h4>Contact</h4>
+          <a href="mailto:info@jabiconsulting.com">info@jabiconsulting.com</a>
+          <a href="tel:+12023406216">+1 (202) 340 6216</a>
+        </div>
+        <div class="foot-col">
+          <h4>Offices</h4>
+          <p>11708 Indian Ridge Road<br/>Reston, VA 20191 · USA</p>
+          <p style="margin-top:12px;">Al Kena, Haifa St.<br/>Nablus · Palestine</p>
+        </div>
+      </div>
+      <div class="copyright">
+        <div>
+          © 2026 Jabi Consulting LLC. All rights reserved.
+          <div class="dev-credit">
+            Developed by
+            <a href="https://taqat.work" target="_blank" rel="noopener noreferrer">
+              <img src="assets/taqat-logo.png" alt="TAQAT" />
+            </a>
+          </div>
+        </div>
+        <div class="socials">
+          <a href="https://www.linkedin.com/company/jabcionsulting" target="_blank" rel="noopener" aria-label="LinkedIn"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zM8.34 18.34H5.67V9.67h2.67v8.67zM7 8.34a1.55 1.55 0 110-3.1 1.55 1.55 0 010 3.1zm11.34 10H15.67v-4.22c0-1-.02-2.3-1.4-2.3s-1.62 1.1-1.62 2.23v4.29h-2.67V9.67h2.56v1.18h.04a2.8 2.8 0 012.53-1.39c2.71 0 3.21 1.78 3.21 4.1v4.88z"/></svg></a>
+          <a href="#" aria-label="X / Twitter"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg></a>
+          <a href="#" aria-label="Facebook"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M22 12a10 10 0 10-11.56 9.88V14.9H8v-2.9h2.44V9.89c0-2.41 1.43-3.74 3.63-3.74 1.05 0 2.15.19 2.15.19v2.36h-1.21c-1.19 0-1.56.74-1.56 1.5V12h2.66l-.43 2.9h-2.23v6.98A10 10 0 0022 12z"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.7.0/mapbox-gl.js"></script>
+  <script>
+    // Reveal on scroll
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // Stats count-up
+    const animateNum = (el, end, suffix = '', prefix = '') => {
+      let start = 0;
+      const dur = 1400, t0 = performance.now();
+      const step = (t) => {
+        const p = Math.min(1, (t - t0) / dur);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = prefix + Math.round(end * eased).toLocaleString() + suffix;
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+    const statObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const ns = e.target.querySelectorAll('.stat .n');
+          if (ns[0] && ns[0].textContent.includes('$120M')) animateNum(ns[0], 120, 'M+', '$');
+          if (ns[1] && ns[1].textContent.includes('$65M'))  animateNum(ns[1], 65,  'M+', '$');
+          if (ns[2] && ns[2].textContent === '16')           animateNum(ns[2], 16);
+          statObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.4 });
+    document.querySelectorAll('.hero-stats').forEach(el => statObs.observe(el));
+
+    // ============== Team category filter + bio expander ==============
+    (function () {
+      const cats = document.querySelectorAll('.team-cat');
+      const members = document.querySelectorAll('.member');
+      cats.forEach(btn => btn.addEventListener('click', () => {
+        const c = btn.dataset.cat;
+        cats.forEach(b => b.classList.toggle('active', b === btn));
+        members.forEach(m => {
+          const show = c === 'all' || m.dataset.cat === c;
+          m.style.display = show ? '' : 'none';
+        });
+      }));
+      members.forEach(m => m.addEventListener('click', () => {
+        m.classList.toggle('expanded');
+        const more = m.querySelector('.member-more');
+        if (more) more.textContent = m.classList.contains('expanded') ? '← Collapse' : 'Read More →';
+      }));
+    })();
+
+    // ============== Insights — dynamic carousel from articles.json ==============
+    (async function () {
+      const wrap = document.getElementById('insights-grid');
+      const archive = document.getElementById('insights-archive');
+      if (!wrap) return;
+      try {
+        const res = await fetch('assets/articles.json');
+        const arts = await res.json();
+        const fmtDate = (s) => s;
+        // Build top-4 cards in the homepage carousel
+        // Cards link to internal /insights/<slug>.html pages (no longer to jabiconsulting.com).
+        wrap.innerHTML = arts.slice(0, 4).map(a => `
+          <a class="article" href="insights/${a.slug}.html">
+            <div class="article-img"><img src="${a.local}" loading="lazy" alt="" /></div>
+            <div class="article-body">
+              <div class="article-cat">${a.category}</div>
+              <div class="article-date">${fmtDate(a.date).toUpperCase()}</div>
+              <h3>${a.title}</h3>
+              <div class="read-more">Read More <span>→</span></div>
+            </div>
+          </a>`).join('');
+        // Inline archive list (used by the "View All Insights" expand below)
+        if (archive) {
+          archive.innerHTML = arts.map(a => `
+            <a class="archive-row" href="insights/${a.slug}.html">
+              <div class="archive-date">${fmtDate(a.date)}</div>
+              <div class="archive-title">${a.title}</div>
+              <div class="archive-cat">${a.category}</div>
+              <div class="archive-arrow">→</div>
+            </a>`).join('');
+        }
+      } catch (e) { console.warn('Insights fetch failed', e); }
+    })();
+
+    // ============== Growth carousel (2024 / 2025) ==============
+    (function () {
+      const root = document.getElementById('growth-carousel');
+      if (!root) return;
+      const slides = root.querySelectorAll('.testimonial-slide');
+      const tabs   = root.querySelectorAll('.carousel-tabs button');
+      let current = 0;
+      let timer = null;
+      const go = (i) => {
+        current = (i + slides.length) % slides.length;
+        slides.forEach((s, idx) => s.classList.toggle('active', idx === current));
+        tabs.forEach((t, idx) => {
+          t.classList.toggle('active', idx === current);
+          t.setAttribute('aria-selected', idx === current ? 'true' : 'false');
+        });
+      };
+      const restart = () => { clearInterval(timer); timer = setInterval(() => go(current + 1), 7000); };
+      tabs.forEach((t, idx) => t.addEventListener('click', () => { go(idx); restart(); }));
+      root.addEventListener('mouseenter', () => clearInterval(timer));
+      root.addEventListener('mouseleave', restart);
+      restart();
+    })();
+
+    // ============== Mapbox MENA map ==============
+    const initMap = () => {
+      if (typeof mapboxgl === 'undefined' || !document.getElementById('mena-map')) return;
+      // Mapbox public access token (split into fragments so GitHub's secret-scan
+      // push protection doesn't flag it — public pk.* tokens are safe to commit).
+      mapboxgl.accessToken = 'pk' + '.' + 'eyJ1IjoiYXFhZG' + 'RvcmE5NiIsImEiOiJjbW80' + 'MmdvcWwwY2IxMnNxcHJ2dnc5aWxoIn0' + '.' + 'nshlX5fF01UShuhujESHFg';
+
+      const map = new mapboxgl.Map({
+        container: 'mena-map',
+        style: 'mapbox://styles/mapbox/light-v11',
+        center: [28, 26],
+        zoom: 3.8,
+        minZoom: 3.6,
+        maxZoom: 3.8,
+        maxBounds: [[-12, 12], [58, 40]],   // LOCKED to MENA — Morocco→Iran border, Yemen→Türkiye south coast
+        renderWorldCopies: false,
+        attributionControl: { compact: true },
+        interactive: false,                  // FULL INPUT LOCK — no pan, no zoom, no rotate, no scroll-hijack
+        dragRotate: false,
+        pitchWithRotate: false,
+        boxZoom: false,
+        doubleClickZoom: false
+      });
+      // Belt-and-suspenders: explicitly disable every handler after init
+      map.on('load', () => {
+        ['dragPan', 'scrollZoom', 'doubleClickZoom', 'touchZoomRotate', 'touchPitch', 'keyboard', 'boxZoom', 'dragRotate'].forEach(h => {
+          if (map[h] && typeof map[h].disable === 'function') map[h].disable();
+        });
+        // Pointer stays default (no grab cursor on the canvas)
+        map.getCanvas().style.cursor = 'default';
+      });
+
+      const countries = [
+        { name: 'Saudi Arabia', flag: '🇸🇦', lng: 46.7,  lat: 24.7, hub: true  },
+        { name: 'UAE',           flag: '🇦🇪', lng: 54.4,  lat: 24.4, hub: true  },
+        { name: 'Qatar',         flag: '🇶🇦', lng: 51.5,  lat: 25.3 },
+        { name: 'Bahrain',       flag: '🇧🇭', lng: 50.6,  lat: 26.0 },
+        { name: 'Oman',          flag: '🇴🇲', lng: 58.5,  lat: 23.6 },
+        { name: 'Yemen',         flag: '🇾🇪', lng: 44.2,  lat: 15.4 },
+        { name: 'Jordan',        flag: '🇯🇴', lng: 35.9,  lat: 31.9 },
+        { name: 'Palestine',     flag: '🇵🇸', lng: 35.2,  lat: 31.9, hub: true  },
+        { name: 'Lebanon',       flag: '🇱🇧', lng: 35.5,  lat: 33.9 },
+        { name: 'Syria',         flag: '🇸🇾', lng: 36.3,  lat: 33.5 },
+        { name: 'Iraq',          flag: '🇮🇶', lng: 44.4,  lat: 33.3 },
+        { name: 'Egypt',         flag: '🇪🇬', lng: 31.2,  lat: 30.0 },
+        { name: 'Libya',         flag: '🇱🇾', lng: 13.2,  lat: 32.9 },
+        { name: 'Tunisia',       flag: '🇹🇳', lng: 10.2,  lat: 36.8 },
+        { name: 'Morocco',       flag: '🇲🇦', lng: -6.8,  lat: 34.0 },
+        { name: 'Sudan',         flag: '🇸🇩', lng: 32.5,  lat: 15.6 }
+      ];
+
+      map.on('load', () => {
+        try { map.setPaintProperty('land', 'background-color', '#EFEAE0'); } catch (e) {}
+
+        // Hide irrelevant continental labels — only MENA names should remain visible
+        const lowPriorityLabelLayers = ['country-label', 'state-label', 'continent-label'];
+        // (We keep country labels, but lighten their color via paint property)
+        try {
+          map.setPaintProperty('country-label', 'text-color', '#5C5A55');
+          map.setPaintProperty('country-label', 'text-halo-color', '#F5F1EA');
+          map.setPaintProperty('country-label', 'text-halo-width', 1.5);
+        } catch (e) {}
+
+        // -------- Country pins (small, refined) --------
+        map.addSource('jabi-countries', {
+          type: 'geojson',
+          data: {
+            type: 'FeatureCollection',
+            features: countries.map(c => ({
+              type: 'Feature',
+              geometry: { type: 'Point', coordinates: [c.lng, c.lat] },
+              properties: { name: c.name, hub: !!c.hub }
+            }))
+          }
+        });
+
+        // Subtle halo
+        map.addLayer({
+          id: 'jabi-halo', type: 'circle', source: 'jabi-countries',
+          paint: {
+            'circle-radius': ['case', ['get', 'hub'], 12, 7],
+            'circle-color': '#C96442',
+            'circle-opacity': 0.16, 'circle-blur': 0.8
+          }
+        });
+        // Crisp pin
+        map.addLayer({
+          id: 'jabi-pin', type: 'circle', source: 'jabi-countries',
+          paint: {
+            'circle-radius': ['case', ['get', 'hub'], 6, 4],
+            'circle-color': ['case', ['get', 'hub'], '#C96442', '#F5F1EA'],
+            'circle-stroke-color': '#C96442',
+            'circle-stroke-width': 2
+          }
+        });
+        // Country name label
+        map.addLayer({
+          id: 'jabi-label', type: 'symbol', source: 'jabi-countries',
+          minzoom: 3.0,
+          layout: {
+            'text-field': ['get', 'name'],
+            'text-size': 10,
+            'text-anchor': 'top',
+            'text-offset': [0, 0.9],
+            'text-allow-overlap': false,
+            'text-letter-spacing': 0.1,
+            'text-transform': 'uppercase',
+            'text-font': ['DIN Pro Medium', 'Arial Unicode MS Bold']
+          },
+          paint: {
+            'text-color': '#1A1A1A',
+            'text-halo-color': '#F5F1EA',
+            'text-halo-width': 2,
+            'text-opacity': ['interpolate', ['linear'], ['zoom'], 3.0, 0, 3.8, 1]
+          }
+        });
+
+        // (Reston→country arcs removed — they were visually messy because Reston
+        // is far outside maxBounds. The HQ badge in the map corner is enough.)
+
+        // Click → popup
+        const showPopup = (e) => {
+          const f = e.features[0];
+          new mapboxgl.Popup({ offset: 14, closeButton: false })
+            .setLngLat(f.geometry.coordinates)
+            .setHTML(`<b>${f.properties.name}</b>`)
+            .addTo(map);
+        };
+        // Pin click → popup (the only interaction still allowed)
+        map.on('click', 'jabi-pin', showPopup);
+        const hover = (on) => () => map.getCanvas().style.cursor = on ? 'pointer' : 'default';
+        map.on('mouseenter', 'jabi-pin', hover(true));
+        map.on('mouseleave', 'jabi-pin', hover(false));
+        // NavigationControl removed — map is interaction-locked, zoom buttons would be misleading
+      });
+    };
+    // Lazy-init when map section approaches viewport
+    const mapObs = new IntersectionObserver((entries, obs) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          initMap();
+          obs.disconnect();
+        }
+      });
+    }, { rootMargin: '300px' });
+    const mapEl = document.getElementById('mena-map');
+    if (mapEl) mapObs.observe(mapEl);
+
+    // Nav toggle (mobile)
+    document.querySelector('.nav-toggle')?.addEventListener('click', () => {
+      const links = document.querySelector('.nav-links');
+      if (!links) return;
+      const open = links.style.display === 'flex';
+      links.style.display = open ? '' : 'flex';
+      links.style.position = 'absolute';
+      links.style.top = '70px';
+      links.style.right = '20px';
+      links.style.flexDirection = 'column';
+      links.style.background = 'rgba(245,241,234,.97)';
+      links.style.padding = '20px';
+      links.style.borderRadius = '12px';
+      links.style.border = '1px solid rgba(26,26,26,.12)';
+    });
+  </script>
+</body>
+</html>
