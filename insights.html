@@ -541,6 +541,11 @@
       font-size: 17px; margin: 0 0 12px; line-height: 1.35;
       letter-spacing: -.005em; font-weight: 600;
     }
+    .article-desc {
+      font-size: 13px; color: var(--ink-dim); line-height: 1.55;
+      margin: 0 0 14px;
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
     .read-more {
       font-size: 13px; color: var(--ink-dim);
       display: inline-flex; align-items: center; gap: 6px;
@@ -921,159 +926,10 @@
         <h1>What Our Team Is Watching.</h1>
         <p class="sub">Monthly briefings on the political economy, labor markets, AI &amp; workforce signals across MENA.</p>
       </div>
-      <div class="insights-filter" id="insights-filter">
-        <button class="active" data-cat="all">All</button>
-        <button data-cat="AI & Workforce">AI &amp; Workforce</button>
-        <button data-cat="Company Updates">Company Updates</button>
-        <button data-cat="Governance & Policy">Governance &amp; Policy</button>
-        <button data-cat="MENA Monthly Pulse">MENA Monthly Pulse</button>
-        <button data-cat="Strategic Insights">Strategic Insights</button>
-        <button data-cat="Youth & Labor">Youth &amp; Labor</button>
+      <div class="insights-filter" id="insights-filter"></div>
+      <div class="insights-list" id="insights-list">
+        <p class="insights-loading" style="color:var(--ink-dim);font-size:14px;">Loading insights…</p>
       </div>
-      <div class="insights-list" id="insights-list"><a class="article" data-cat="MENA Monthly Pulse" href="insights/mena-monthly-pulse-volume-4-2026.html">
-            <div class="article-img"><img src="assets/articles/mena-monthly-pulse-volume-4-2026.jpeg" loading="lazy" alt="" /></div>
-            <div class="article-body">
-              <div class="article-cat">MENA Monthly Pulse</div>
-              <div class="article-date">APRIL 30, 2026</div>
-              <h3>MENA Monthly Pulse Volume 4 (2026)</h3>
-              <div class="read-more">Read More <span>→</span></div>
-            </div>
-          </a>
-        <a class="article" data-cat="AI & Workforce" href="insights/is-ai-solving-the-youth-labor-market-mismatch-in-mena.html">
-            <div class="article-img"><img src="assets/articles/is-ai-solving-the-youth-labor-market-mismatch-in-mena.jpg" loading="lazy" alt="" /></div>
-            <div class="article-body">
-              <div class="article-cat">AI &amp; Workforce</div>
-              <div class="article-date">APRIL 12, 2026</div>
-              <h3>Is AI Solving the Youth Labor Market Mismatch in MENA?</h3>
-              <div class="read-more">Read More <span>→</span></div>
-            </div>
-          </a>
-        <a class="article" data-cat="MENA Monthly Pulse" href="insights/mena-monthly-pulse-volume-3-2026.html">
-            <div class="article-img"><img src="assets/articles/mena-monthly-pulse-volume-3-2026.jpeg" loading="lazy" alt="" /></div>
-            <div class="article-body">
-              <div class="article-cat">MENA Monthly Pulse</div>
-              <div class="article-date">MARCH 30, 2026</div>
-              <h3>MENA Monthly Pulse Volume 3 (2026)</h3>
-              <div class="read-more">Read More <span>→</span></div>
-            </div>
-          </a>
-        <a class="article" data-cat="MENA Monthly Pulse" href="insights/mena-monthly-pulse-volume-2-2026.html">
-            <div class="article-img"><img src="assets/articles/mena-monthly-pulse-volume-2-2026.jpeg" loading="lazy" alt="" /></div>
-            <div class="article-body">
-              <div class="article-cat">MENA Monthly Pulse</div>
-              <div class="article-date">FEBRUARY 28, 2026</div>
-              <h3>MENA Monthly Pulse Volume 2 (2026)</h3>
-              <div class="read-more">Read More <span>→</span></div>
-            </div>
-          </a>
-        <a class="article" data-cat="Governance & Policy" href="insights/beyond-the-board-of-peace-the-urgent-reality-in-gaza-and-the-west-bank.html">
-            <div class="article-img"><img src="assets/articles/beyond-the-board-of-peace-the-urgent-reality-in-gaza-and-the-west-bank.jpg" loading="lazy" alt="" /></div>
-            <div class="article-body">
-              <div class="article-cat">Governance &amp; Policy</div>
-              <div class="article-date">FEBRUARY 20, 2026</div>
-              <h3>Beyond the Board of Peace: The Urgent Reality in Gaza and the West Bank</h3>
-              <div class="read-more">Read More <span>→</span></div>
-            </div>
-          </a>
-        <a class="article" data-cat="MENA Monthly Pulse" href="insights/mena-monthly-pulse-volume-1-2026.html">
-            <div class="article-img"><img src="assets/articles/mena-monthly-pulse-volume-1-2026.jpeg" loading="lazy" alt="" /></div>
-            <div class="article-body">
-              <div class="article-cat">MENA Monthly Pulse</div>
-              <div class="article-date">JANUARY 31, 2026</div>
-              <h3>MENA Monthly Pulse Volume 1 (2026)</h3>
-              <div class="read-more">Read More <span>→</span></div>
-            </div>
-          </a>
-        <a class="article" data-cat="Youth & Labor" href="insights/the-mena-youth-employment-time-bomb-and-how-to-defuse-it-at-scale.html">
-            <div class="article-img"><img src="assets/articles/the-mena-youth-employment-time-bomb-and-how-to-defuse-it-at-scale.jpg" loading="lazy" alt="" /></div>
-            <div class="article-body">
-              <div class="article-cat">Youth &amp; Labor</div>
-              <div class="article-date">JANUARY 26, 2026</div>
-              <h3>The MENA Youth Employment Time Bomb — And How to Defuse It at Scale</h3>
-              <div class="read-more">Read More <span>→</span></div>
-            </div>
-          </a>
-        <a class="article" data-cat="MENA Monthly Pulse" href="insights/mena-monthly-pulse-volume-11.html">
-            <div class="article-img"><img src="assets/articles/mena-monthly-pulse-volume-11.jpeg" loading="lazy" alt="" /></div>
-            <div class="article-body">
-              <div class="article-cat">MENA Monthly Pulse</div>
-              <div class="article-date">DECEMBER 30, 2025</div>
-              <h3>MENA Monthly Pulse Volume 11</h3>
-              <div class="read-more">Read More <span>→</span></div>
-            </div>
-          </a>
-        <a class="article" data-cat="AI & Workforce" href="insights/the-gulfs-ai-moment-and-the-untapped-power-of-arab-youth.html">
-            <div class="article-img"><img src="assets/articles/the-gulfs-ai-moment-and-the-untapped-power-of-arab-youth.jpg" loading="lazy" alt="" /></div>
-            <div class="article-body">
-              <div class="article-cat">AI &amp; Workforce</div>
-              <div class="article-date">DECEMBER 26, 2025</div>
-              <h3>The Gulf’s AI Moment and the Untapped Power of Arab Youth</h3>
-              <div class="read-more">Read More <span>→</span></div>
-            </div>
-          </a>
-        <a class="article" data-cat="Company Updates" href="insights/happy-holidays-from-jabi-consulting.html">
-            <div class="article-img"><img src="assets/articles/happy-holidays-from-jabi-consulting.jpg" loading="lazy" alt="" /></div>
-            <div class="article-body">
-              <div class="article-cat">Company Updates</div>
-              <div class="article-date">DECEMBER 23, 2025</div>
-              <h3>Happy Holidays from Jabi Consulting</h3>
-              <div class="read-more">Read More <span>→</span></div>
-            </div>
-          </a>
-        <a class="article" data-cat="MENA Monthly Pulse" href="insights/mena-monthly-pulse-volume-10.html">
-            <div class="article-img"><img src="assets/articles/mena-monthly-pulse-volume-10.jpeg" loading="lazy" alt="" /></div>
-            <div class="article-body">
-              <div class="article-cat">MENA Monthly Pulse</div>
-              <div class="article-date">NOVEMBER 30, 2025</div>
-              <h3>MENA Monthly Pulse Volume 10</h3>
-              <div class="read-more">Read More <span>→</span></div>
-            </div>
-          </a>
-        <a class="article" data-cat="AI & Workforce" href="insights/ai-and-the-arab-labor-market-strategic-considerations-for-gcc-leaders.html">
-            <div class="article-img"><img src="assets/articles/ai-and-the-arab-labor-market-strategic-considerations-for-gcc-leaders.jpeg" loading="lazy" alt="" /></div>
-            <div class="article-body">
-              <div class="article-cat">AI &amp; Workforce</div>
-              <div class="article-date">NOVEMBER 7, 2025</div>
-              <h3>AI and the Arab Labor Market: Strategic Considerations for GCC Leaders</h3>
-              <div class="read-more">Read More <span>→</span></div>
-            </div>
-          </a>
-        <a class="article" data-cat="Youth & Labor" href="insights/welcome-karla-yoder-as-senior-workforce-expert.html">
-            <div class="article-img"><img src="assets/articles/welcome-karla-yoder-as-senior-workforce-expert.jpg" loading="lazy" alt="" /></div>
-            <div class="article-body">
-              <div class="article-cat">Youth &amp; Labor</div>
-              <div class="article-date">NOVEMBER 7, 2025</div>
-              <h3>Welcome Karla Yoder as Senior Workforce Expert!</h3>
-              <div class="read-more">Read More <span>→</span></div>
-            </div>
-          </a>
-        <a class="article" data-cat="MENA Monthly Pulse" href="insights/mena-monthly-pulse-volume-9.html">
-            <div class="article-img"><img src="assets/articles/mena-monthly-pulse-volume-9.jpeg" loading="lazy" alt="" /></div>
-            <div class="article-body">
-              <div class="article-cat">MENA Monthly Pulse</div>
-              <div class="article-date">OCTOBER 28, 2025</div>
-              <h3>MENA Monthly Pulse Volume 9</h3>
-              <div class="read-more">Read More <span>→</span></div>
-            </div>
-          </a>
-        <a class="article" data-cat="Strategic Insights" href="insights/engaging-the-diaspora-building-the-first-palestinian-state-of-mind.html">
-            <div class="article-img"><img src="assets/articles/engaging-the-diaspora-building-the-first-palestinian-state-of-mind.jpg" loading="lazy" alt="" /></div>
-            <div class="article-body">
-              <div class="article-cat">Strategic Insights</div>
-              <div class="article-date">OCTOBER 22, 2025</div>
-              <h3>Engaging the Diaspora: Building the First Palestinian State of Mind</h3>
-              <div class="read-more">Read More <span>→</span></div>
-            </div>
-          </a>
-        <a class="article" data-cat="MENA Monthly Pulse" href="insights/mena-monthly-pulse-volume-8.html">
-            <div class="article-img"><img src="assets/articles/mena-monthly-pulse-volume-8.jpeg" loading="lazy" alt="" /></div>
-            <div class="article-body">
-              <div class="article-cat">MENA Monthly Pulse</div>
-              <div class="article-date">SEPTEMBER 29, 2025</div>
-              <h3>MENA Monthly Pulse Volume 8</h3>
-              <div class="read-more">Read More <span>→</span></div>
-            </div>
-          </a></div>
     </div>
   </main>
   <footer>
@@ -1119,16 +975,56 @@
       </div>
     </div>
   </footer>
-  <script>
-    document.querySelectorAll('#insights-filter button').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const c = btn.dataset.cat;
-        document.querySelectorAll('#insights-filter button').forEach(b => b.classList.toggle('active', b === btn));
-        document.querySelectorAll('#insights-list .article').forEach(el => {
-          el.style.display = (c === 'all' || el.dataset.cat === c) ? '' : 'none';
+    <script>
+    (function () {
+      var listEl = document.getElementById('insights-list');
+      var filterEl = document.getElementById('insights-filter');
+      var items = [], current = 'all';
+      function esc(s){ return (s==null?'':String(s)).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+      function cardHTML(it){
+        var href = it.pdf || it.link || '#';
+        var ext = it.pdf ? ' target="_blank" rel="noopener"' : '';
+        var img = it.image ? '<div class="article-img"><img src="'+esc(it.image)+'" loading="lazy" alt="" /></div>' : '';
+        var desc = it.description ? '<p class="article-desc">'+esc(it.description)+'</p>' : '';
+        var label = it.pdf ? 'View PDF' : 'Read More';
+        return '<a class="article" data-cat="'+esc(it.category)+'" href="'+esc(href)+'"'+ext+'>'+
+          img+
+          '<div class="article-body">'+
+            '<div class="article-cat">'+esc(it.category)+'</div>'+
+            '<div class="article-date">'+esc((it.date||'').toUpperCase())+'</div>'+
+            '<h3>'+esc(it.title)+'</h3>'+
+            desc+
+            '<div class="read-more">'+label+' <span>\u2192</span></div>'+
+          '</div>'+
+        '</a>';
+      }
+      function render(){
+        var shown = items.filter(function(it){ return current==='all' || it.category===current; });
+        listEl.innerHTML = shown.length ? shown.map(cardHTML).join('') : '<p style="color:var(--ink-dim);font-size:14px;">No insights in this category yet.</p>';
+      }
+      function renderFilters(){
+        var cats = [];
+        items.forEach(function(i){ if(i.category && cats.indexOf(i.category)===-1) cats.push(i.category); });
+        cats.sort();
+        var all = ['all'].concat(cats);
+        filterEl.innerHTML = all.map(function(c){ return '<button'+(c==='all'?' class="active"':'')+' data-cat="'+esc(c)+'">'+(c==='all'?'All':esc(c))+'</button>'; }).join('');
+        Array.prototype.forEach.call(filterEl.querySelectorAll('button'), function(btn){
+          btn.addEventListener('click', function(){
+            current = btn.dataset.cat;
+            Array.prototype.forEach.call(filterEl.querySelectorAll('button'), function(b){ b.classList.toggle('active', b===btn); });
+            render();
+          });
         });
-      });
-    });
+      }
+      fetch('assets/insights/manifest.json?cb=' + Date.now())
+        .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+        .then(function(data){
+          items = (data && data.insights) ? data.insights : (Array.isArray(data) ? data : []);
+          renderFilters();
+          render();
+        })
+        .catch(function(e){ listEl.innerHTML = '<p style="color:var(--ink-dim);font-size:14px;">Unable to load insights right now.</p>'; console.error('insights manifest load failed', e); });
+    })();
   </script>
 </body>
 </html>
