@@ -157,6 +157,8 @@
       transition: transform .2s;
     }
     .nav-avatar-badge svg { width: 9px; height: 9px; }
+    .nav-avatar-badge--left { right: auto; left: -3px; }
+    .nav-avatar--jabi img { object-fit: contain; background: #fff; }
     .nav-avatar:hover { transform: translateY(-1px); }
     .nav-avatar:hover img { border-color: var(--accent); }
     .nav-avatar:hover .nav-avatar-badge { transform: scale(1.1); }
@@ -575,12 +577,21 @@
     .blueprint-link {
       display: inline-flex; align-items: center; gap: 8px;
       margin-top: 22px;
+      padding: 12px 22px;
+      border-radius: 999px;
+      border: 1.5px solid var(--accent);
       color: var(--accent);
       font-weight: 600; font-size: 15px;
       letter-spacing: -.01em;
-      transition: color .2s;
+      transition: transform .2s, box-shadow .2s, background .2s, color .2s, border-color .2s;
     }
-    .blueprint-link:hover { color: var(--accent-2); }
+    .blueprint-link:hover {
+      color: #fff;
+      background: var(--accent);
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 18px 40px -10px rgba(201,100,66,.55);
+    }
     .blueprint-link-arrow { transition: transform .2s; display: inline-block; }
     .blueprint-link:hover .blueprint-link-arrow { transform: translateX(4px); }
     .regions-intro-photo {
@@ -1142,8 +1153,11 @@
         <a href="insights.html">Insights</a>
         <a href="#why">Why Us</a>
         <div class="nav-cluster">
-          <a href="https://www.linkedin.com/company/jabcionsulting" target="_blank" rel="noopener" aria-label="Jabi Consulting on LinkedIn" title="Jabi Consulting on LinkedIn" class="nav-linkedin">
-            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zM8.34 18.34H5.67V9.67h2.67v8.67zM7 8.34a1.55 1.55 0 110-3.1 1.55 1.55 0 010 3.1zm11.34 10H15.67v-4.22c0-1-.02-2.3-1.4-2.3s-1.62 1.1-1.62 2.23v4.29h-2.67V9.67h2.56v1.18h.04a2.8 2.8 0 012.53-1.39c2.71 0 3.21 1.78 3.21 4.1v4.88z"/></svg>
+          <a href="https://www.linkedin.com/company/jabcionsulting" target="_blank" rel="noopener" aria-label="Jabi Consulting on LinkedIn" title="Jabi Consulting on LinkedIn" class="nav-avatar nav-avatar--jabi">
+            <img src="assets/team/jabi-avatar.png" alt="Jabi Consulting" />
+            <span class="nav-avatar-badge nav-avatar-badge--left" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zM8.34 18.34H5.67V9.67h2.67v8.67zM7 8.34a1.55 1.55 0 110-3.1 1.55 1.55 0 010 3.1zm11.34 10H15.67v-4.22c0-1-.02-2.3-1.4-2.3s-1.62 1.1-1.62 2.23v4.29h-2.67V9.67h2.56v1.18h.04a2.8 2.8 0 012.53-1.39c2.71 0 3.21 1.78 3.21 4.1v4.88z"/></svg>
+            </span>
           </a>
           <a href="https://www.linkedin.com/in/hishamjabi" target="_blank" rel="noopener" aria-label="Hisham Jabi on LinkedIn" title="Hisham Jabi on LinkedIn" class="nav-avatar">
             <img src="assets/team/hisham-jabi.webp" alt="Hisham Jabi" />
