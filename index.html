@@ -101,12 +101,12 @@
       text-transform: uppercase;
       text-align: left;           /* left-aligned under the logo */
       letter-spacing: .35em;
-      padding-left: 7px;          /* align "MENA" flush under the "J" glyph of the logo */
+      padding-left: 5.6px;        /* aligns the "M" ink under the "J" ink (logo has 3.1% left whitespace; M has 0.5px bearing) */
     }
     .brand-text { display: none; }
     @media (max-width: 720px) {
       .brand img { height: 34px; }
-      .brand-tag { font-size: 9px; letter-spacing: .28em; }
+      .brand-tag { font-size: 9px; letter-spacing: .28em; padding-left: 4.7px; }
     }
     .nav-links { display: flex; gap: 30px; align-items: center; }
     .nav-links > a { font-size: 14px; color: var(--ink-dim); transition: color .2s; }
