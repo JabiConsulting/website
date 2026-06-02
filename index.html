@@ -1686,34 +1686,38 @@
       }));
     })();
 
-    // ============== Insights — dynamic carousel from articles.json ==============
+    // ============== Insights — dynamic carousel from manifest.json ==============
+    // Single source of truth shared with insights.html and admin.html.
     (async function () {
       const wrap = document.getElementById('insights-grid');
       const archive = document.getElementById('insights-archive');
       if (!wrap) return;
+      const esc = (s) => (s == null ? '' : String(s)).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+      const hrefOf = (a) => esc(a.pdf || a.link || '#');
+      const extOf = (a) => a.pdf ? ' target="_blank" rel="noopener"' : '';
+      const labelOf = (a) => a.pdf ? 'View PDF' : 'Read More';
       try {
-        const res = await fetch('assets/articles.json');
-        const arts = await res.json();
-        const fmtDate = (s) => s;
+        const res = await fetch('assets/insights/manifest.json?cb=' + Date.now());
+        const data = await res.json();
+        const arts = (data && data.insights) ? data.insights : (Array.isArray(data) ? data : []);
         // Build top-4 cards in the homepage carousel
-        // Cards link to internal /insights/<slug>.html pages (no longer to jabiconsulting.com).
         wrap.innerHTML = arts.slice(0, 4).map(a => `
-          <a class="article" href="insights/${a.slug}.html">
-            <div class="article-img"><img src="${a.local}" loading="lazy" alt="" /></div>
+          <a class="article" href="${hrefOf(a)}"${extOf(a)}>
+            <div class="article-img"><img src="${esc(a.image)}" loading="lazy" alt="" /></div>
             <div class="article-body">
-              <div class="article-cat">${a.category}</div>
-              <div class="article-date">${fmtDate(a.date).toUpperCase()}</div>
-              <h3>${a.title}</h3>
-              <div class="read-more">Read More <span>→</span></div>
+              <div class="article-cat">${esc(a.category)}</div>
+              <div class="article-date">${esc((a.date || '').toUpperCase())}</div>
+              <h3>${esc(a.title)}</h3>
+              <div class="read-more">${labelOf(a)} <span>→</span></div>
             </div>
           </a>`).join('');
         // Inline archive list (used by the "View All Insights" expand below)
         if (archive) {
           archive.innerHTML = arts.map(a => `
-            <a class="archive-row" href="insights/${a.slug}.html">
-              <div class="archive-date">${fmtDate(a.date)}</div>
-              <div class="archive-title">${a.title}</div>
-              <div class="archive-cat">${a.category}</div>
+            <a class="archive-row" href="${hrefOf(a)}"${extOf(a)}>
+              <div class="archive-date">${esc(a.date)}</div>
+              <div class="archive-title">${esc(a.title)}</div>
+              <div class="archive-cat">${esc(a.category)}</div>
               <div class="archive-arrow">→</div>
             </a>`).join('');
         }
