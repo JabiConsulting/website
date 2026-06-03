@@ -1,0 +1,113 @@
+/* ==========================================================================
+   Jabi Consulting — shared site header (namespaced .jc-*)
+   Self-contained: uses var(--x, fallback) so it adapts to each page's theme
+   but never depends on it. Injected by /assets/site-header.js into #jc-header.
+   ========================================================================== */
+
+.jc-nav {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--bg-translucent, rgba(245, 241, 234, .78));
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line, rgba(26, 26, 26, .10));
+  font-family: "Cairo", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+.jc-nav *, .jc-nav *::before, .jc-nav *::after { box-sizing: border-box; }
+.jc-nav-inner {
+  max-width: var(--maxw, 1240px);
+  margin: 0 auto;
+  padding: 18px 28px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+/* ---- brand: logo + tagline stacked, tagline stretches to logo width ---- */
+.jc-brand {
+  display: inline-flex; flex-direction: column; align-items: stretch;
+  gap: 4px; line-height: 1; text-decoration: none;
+}
+.jc-logo { height: 40px; width: auto; display: block; background: transparent; }
+
+.jc-tag {
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 10px; font-weight: 600;
+  color: var(--ink-dim, #5C5A55);
+  text-transform: uppercase;
+  line-height: 1;
+  /* pin first/last letters under the logo ink: J starts at 3.0%, g ends at 98.33% */
+  padding-left: 3%;
+  padding-right: 1.67%;
+}
+.jc-tag > span { display: block; }
+.jc-tag .jc-sp { flex: 0 0 .5em; }   /* extra breathing room for the word break */
+
+/* ---- nav links ---- */
+.jc-links { display: flex; gap: 30px; align-items: center; }
+.jc-links > a {
+  font-size: 14px; color: var(--ink-dim, #5C5A55);
+  text-decoration: none; transition: color .2s;
+}
+.jc-links > a:hover { color: var(--accent, #C96442); }
+
+/* ---- right cluster: LinkedIn avatars + CTA ---- */
+.jc-cluster { display: flex; align-items: center; gap: 8px; margin-left: 8px; }
+
+.jc-avatar {
+  position: relative; display: inline-block;
+  width: 36px; height: 36px; border-radius: 50%;
+  overflow: visible; transition: transform .2s;
+}
+.jc-avatar img {
+  width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
+  border: 1.5px solid var(--line-strong, rgba(26, 26, 26, .18));
+  transition: border-color .2s; display: block;
+}
+.jc-avatar--jabi img { object-fit: contain; background: #fff; }
+.jc-badge {
+  position: absolute; right: -3px; bottom: -3px;
+  width: 16px; height: 16px; display: grid; place-items: center;
+  background: #0a66c2; color: #fff; border-radius: 4px;
+  border: 2px solid var(--bg, #F5F1EA); transition: transform .2s;
+}
+.jc-badge--left { right: auto; left: -3px; }
+.jc-badge svg { width: 9px; height: 9px; fill: currentColor; }
+.jc-avatar:hover { transform: translateY(-1px); }
+.jc-avatar:hover img { border-color: var(--accent, #C96442); }
+.jc-avatar:hover .jc-badge { transform: scale(1.1); }
+
+.jc-cta {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 12px 22px; border-radius: 999px;
+  font-weight: 600; font-size: 14px; text-decoration: none;
+  background: var(--accent, #C96442); color: #fff !important;
+  box-shadow: 0 12px 30px -10px rgba(201, 100, 66, .45);
+  transition: transform .2s, box-shadow .2s, background .2s;
+}
+.jc-cta:hover {
+  transform: translateY(-2px);
+  background: var(--accent-2, #B3573A);
+  box-shadow: 0 18px 40px -10px rgba(201, 100, 66, .55);
+}
+
+/* ---- mobile toggle ---- */
+.jc-toggle { display: none; background: transparent; border: 0; color: var(--ink, #1A1A1A); cursor: pointer; padding: 4px; }
+.jc-toggle svg { display: block; }
+
+@media (max-width: 880px) {
+  .jc-links { display: none; }
+  .jc-links.jc-open {
+    display: flex; flex-direction: column; align-items: flex-start;
+    position: absolute; top: 70px; right: 20px;
+    gap: 18px; padding: 20px;
+    background: rgba(245, 241, 234, .97);
+    border: 1px solid rgba(26, 26, 26, .12); border-radius: 12px;
+    box-shadow: 0 24px 60px -28px rgba(26, 26, 26, .4);
+  }
+  .jc-links.jc-open .jc-cluster { margin-left: 0; }
+  .jc-toggle { display: inline-flex; }
+}
+@media (max-width: 720px) {
+  .jc-nav-inner { padding: 14px 20px; }
+  .jc-logo { height: 34px; }
+  .jc-tag { font-size: 9px; }
+}
