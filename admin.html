@@ -104,6 +104,29 @@
     .note { font-size: 11.5px; color: var(--muted); line-height: 1.55; }
     .note b { color: var(--ink-dim); }
     code { font-family: "JetBrains Mono", monospace; font-size: 11.5px; background: var(--bg-2); padding: 1px 5px; border-radius: 5px; }
+
+    /* manage list */
+    .edit-banner { display: none; align-items: center; justify-content: space-between; gap: 12px; background: rgba(201,100,66,.10); border: 1px solid var(--accent); border-radius: 10px; padding: 10px 14px; margin-bottom: 16px; font-size: 13px; font-weight: 600; color: var(--accent-2); }
+    .edit-banner.show { display: flex; }
+    .edit-banner button { font-family: inherit; font-size: 12px; font-weight: 700; border: none; background: transparent; color: var(--accent-2); cursor: pointer; text-decoration: underline; padding: 0; }
+    .mlist { display: flex; flex-direction: column; gap: 10px; }
+    .mrow { display: flex; align-items: center; gap: 14px; border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; background: var(--bg-2); }
+    .mrow img { width: 56px; height: 42px; object-fit: cover; border-radius: 7px; flex: none; background: #ddd; }
+    .mrow .meta { flex: 1; min-width: 0; }
+    .mrow .meta .t { font-weight: 700; font-size: 13.5px; line-height: 1.3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .mrow .meta .s { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+    .mrow .ops { display: flex; gap: 8px; flex: none; }
+    .mrow .ops button { font-family: inherit; font-weight: 700; font-size: 11.5px; border-radius: 8px; padding: 7px 12px; cursor: pointer; border: 1px solid var(--line-strong); background: #fff; color: var(--ink); transition: all .15s; }
+    .mrow .ops button.edit:hover { border-color: var(--accent); color: var(--accent); }
+    .mrow .ops button.del:hover { border-color: var(--err); color: var(--err); }
+    .mrow .ops button:disabled { opacity: .5; cursor: not-allowed; }
+    .mempty { font-size: 13px; color: var(--muted); }
+    @media (max-width: 560px) {
+      .mrow { flex-wrap: wrap; }
+      .mrow .meta { flex: 1 1 60%; }
+      .mrow .ops { flex: 1 1 100%; }
+      .mrow .ops button { flex: 1; }
+    }
   </style>
 </head>
 <body>
@@ -132,10 +155,14 @@
       <div style="margin-top:12px;"><button class="btn ghost" id="clearToken" type="button">Forget token</button></div>
     </div>
 
-    <!-- NEW INSIGHT -->
+    <!-- NEW / EDIT INSIGHT -->
     <div class="card">
-      <h2>New insight</h2>
+      <h2 id="formTitle">New insight</h2>
       <form id="form">
+        <div class="edit-banner" id="editBanner">
+          <span id="editBannerText">Editing existing insight</span>
+          <button type="button" id="cancelEdit">Cancel edit</button>
+        </div>
         <div class="field">
           <label for="title">Title *</label>
           <input type="text" id="title" required placeholder="MENA Monthly Pulse Volume 5 (2026)" />
@@ -158,8 +185,8 @@
         </div>
         <div class="row">
           <div class="field">
-            <label for="image">Cover image *</label>
-            <p class="hint">JPG or PNG. Shown on the card.</p>
+            <label for="image"><span id="imageLabel">Cover image *</span></label>
+            <p class="hint" id="imageHint">JPG or PNG. Shown on the card.</p>
             <input type="file" id="image" accept="image/*" required />
           </div>
           <div class="field">
@@ -180,6 +207,12 @@
         <div class="status" id="status"></div>
         <div class="log" id="log"></div>
       </form>
+    </div>
+
+    <!-- MANAGE INSIGHTS -->
+    <div class="card">
+      <h2>Current insights</h2>
+      <div class="mlist" id="manageList"><p class="mempty">Loading…</p></div>
     </div>
 
     <p class="note" style="text-align:center;">Jabi Consulting · static admin · changes go live within ~1 minute of publishing.</p>
@@ -267,6 +300,17 @@
         return r.json();
       });
     }
+    function deleteFile(path, message) {
+      // best-effort delete of a repo asset; resolves quietly if missing
+      return getFileSha(path).then(function (meta) {
+        if (!meta || !meta.sha) return null;
+        return gh('DELETE', '/contents/' + path, { message: message, branch: BRANCH, sha: meta.sha }).then(function () { return true; });
+      }).catch(function () { return null; });
+    }
+    function esc(s) {
+      return (s == null ? '' : String(s)).replace(/[&<>"']/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; });
+    }
+    function isLocalAsset(p) { return typeof p === 'string' && p.indexOf(ASSET_DIR) === 0; }
 
     // ---------- token verify ----------
     function verifyToken() {
@@ -298,10 +342,88 @@
       }).catch(function () {});
     }
 
-    // ---------- publish ----------
+    // ---------- manage state ----------
+    var currentItems = [];      // last-loaded manifest insights
+    var editIndex = null;       // array index being edited (null = add mode)
+    var editingOriginal = null; // snapshot of the entry being edited
+
+    function pad2(n) { n = String(n); return n.length < 2 ? '0' + n : n; }
+    function parseDateToIso(s) {
+      if (!s) return '';
+      if (/^\d{4}-\d{2}-\d{2}$/.test(s.trim())) return s.trim();
+      var months = { january:1,february:2,march:3,april:4,may:5,june:6,july:7,august:8,september:9,october:10,november:11,december:12 };
+      var m = /^([A-Za-z]+)\s+(\d{1,2}),\s*(\d{4})$/.exec(s.trim());
+      if (m && months[m[1].toLowerCase()]) return m[3] + '-' + pad2(months[m[1].toLowerCase()]) + '-' + pad2(m[2]);
+      return '';
+    }
+    function findEntryIndex(arr, ref) {
+      if (!ref) return -1;
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i].title === ref.title && (arr[i].image || null) === (ref.image || null)) return i;
+      }
+      return -1;
+    }
+
+    // ---------- render manage list ----------
+    function loadInsights() {
+      var el = $('manageList');
+      fetch(MANIFEST_PATH + '?cb=' + Date.now()).then(function (r) { return r.ok ? r.json() : null; }).then(function (data) {
+        currentItems = (data && data.insights) ? data.insights : (Array.isArray(data) ? data : []);
+        renderManage();
+      }).catch(function () { el.innerHTML = '<p class="mempty">Could not load insights.</p>'; });
+    }
+    function renderManage() {
+      var el = $('manageList');
+      if (!currentItems.length) { el.innerHTML = '<p class="mempty">No insights yet.</p>'; return; }
+      el.innerHTML = currentItems.map(function (it, idx) {
+        var img = '<img src="' + esc(it.image || '') + '" alt="" loading="lazy" />';
+        var sub = esc(it.category || '') + ' · ' + esc(it.date || '') + (it.pdf ? ' · PDF' : '');
+        return '<div class="mrow">' + img +
+          '<div class="meta"><div class="t">' + esc(it.title || '(untitled)') + '</div><div class="s">' + sub + '</div></div>' +
+          '<div class="ops"><button type="button" class="edit" data-idx="' + idx + '">Edit</button>' +
+          '<button type="button" class="del" data-idx="' + idx + '">Delete</button></div></div>';
+      }).join('');
+      Array.prototype.forEach.call(el.querySelectorAll('button.edit'), function (b) { b.addEventListener('click', function () { startEdit(parseInt(b.getAttribute('data-idx'), 10)); }); });
+      Array.prototype.forEach.call(el.querySelectorAll('button.del'), function (b) { b.addEventListener('click', function () { deleteInsight(parseInt(b.getAttribute('data-idx'), 10)); }); });
+    }
+
+    // ---------- edit mode toggles ----------
+    function startEdit(idx) {
+      var it = currentItems[idx]; if (!it) return;
+      editIndex = idx; editingOriginal = JSON.parse(JSON.stringify(it));
+      $('title').value = it.title || '';
+      $('description').value = it.description || '';
+      $('category').value = it.category || '';
+      $('date').value = parseDateToIso(it.date) || '';
+      $('link').value = it.link || '';
+      $('image').value = ''; $('pdf').value = '';
+      $('image').required = false;
+      $('formTitle').textContent = 'Edit insight';
+      $('submit').textContent = 'Save changes';
+      $('imageLabel').textContent = 'Replace cover image (optional)';
+      $('imageHint').textContent = 'Leave empty to keep the current image.';
+      $('editBannerText').textContent = 'Editing: ' + (it.title || '');
+      $('editBanner').classList.add('show');
+      setStatus('', ''); $('log').textContent = ''; $('log').classList.remove('show');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function cancelEdit() {
+      editIndex = null; editingOriginal = null;
+      $('form').reset();
+      $('date').value = new Date().toISOString().slice(0, 10);
+      $('image').required = true;
+      $('formTitle').textContent = 'New insight';
+      $('submit').textContent = 'Publish insight';
+      $('imageLabel').textContent = 'Cover image *';
+      $('imageHint').textContent = 'JPG or PNG. Shown on the card.';
+      $('editBanner').classList.remove('show');
+    }
+
+    // ---------- publish / save (upsert) ----------
     function publish(e) {
       e.preventDefault();
       if (!token) { setStatus('Save a token first.', 'err'); return; }
+      var editing = editIndex !== null;
       var title = $('title').value.trim();
       var description = $('description').value.trim();
       var category = $('category').value.trim();
@@ -309,40 +431,37 @@
       var imageFile = $('image').files[0];
       var pdfFile = $('pdf').files[0];
       var link = $('link').value.trim();
-      if (!title || !category || !dateIso || !imageFile) { setStatus('Fill in all required fields and choose an image.', 'err'); return; }
+      if (!title || !category || !dateIso) { setStatus('Fill in title, category and date.', 'err'); return; }
+      if (!editing && !imageFile) { setStatus('Choose a cover image.', 'err'); return; }
 
       $('submit').disabled = true;
       $('log').textContent = ''; $('log').classList.remove('show');
-      setStatus('Publishing…', '');
+      setStatus(editing ? 'Saving…' : 'Publishing…', '');
 
       var slug = slugify(title);
       var stamp = Date.now().toString(36);
-      var imgPath = ASSET_DIR + slug + '-' + stamp + '.' + extOf(imageFile.name, 'jpg');
-      var pdfPath = pdfFile ? (ASSET_DIR + slug + '-' + stamp + '.pdf') : null;
+      var entry = editing ? JSON.parse(JSON.stringify(editingOriginal)) : { featured: false };
+      entry.title = title; entry.description = description; entry.category = category;
+      entry.date = fmtDate(dateIso); entry.link = link || null;
+      if (!editing) { entry.image = entry.image || null; entry.pdf = entry.pdf || null; }
 
-      var entry = {
-        title: title,
-        description: description,
-        category: category,
-        date: fmtDate(dateIso),
-        image: imgPath,
-        link: link || null,
-        pdf: pdfPath,
-        featured: false
-      };
+      var newImgPath = imageFile ? (ASSET_DIR + slug + '-' + stamp + '.' + extOf(imageFile.name, 'jpg')) : null;
+      var newPdfPath = pdfFile ? (ASSET_DIR + slug + '-' + stamp + '.pdf') : null;
+      var oldImg = editing ? editingOriginal.image : null;
+      var oldPdf = editing ? editingOriginal.pdf : null;
 
       Promise.resolve()
-        .then(function () { logLine('Uploading cover image…'); return fileToBase64(imageFile); })
-        .then(function (b64) { return putFile(imgPath, b64, 'admin: add image for "' + title + '"'); })
+        .then(function () {
+          if (!imageFile) return null;
+          logLine('Uploading cover image…');
+          return fileToBase64(imageFile).then(function (b64) { return putFile(newImgPath, b64, 'admin: image for "' + title + '"'); }).then(function () { entry.image = newImgPath; });
+        })
         .then(function () {
           if (!pdfFile) return null;
           logLine('Uploading PDF…');
-          return fileToBase64(pdfFile).then(function (b64) { return putFile(pdfPath, b64, 'admin: add PDF for "' + title + '"'); });
+          return fileToBase64(pdfFile).then(function (b64) { return putFile(newPdfPath, b64, 'admin: PDF for "' + title + '"'); }).then(function () { entry.pdf = newPdfPath; });
         })
-        .then(function () {
-          logLine('Reading manifest…');
-          return getFileSha(MANIFEST_PATH);
-        })
+        .then(function () { logLine('Reading manifest…'); return getFileSha(MANIFEST_PATH); })
         .then(function (meta) {
           var manifest = { version: 1, updated: '', insights: [] };
           var sha = null;
@@ -351,25 +470,74 @@
             try { manifest = JSON.parse(base64ToUtf8(meta.content)); } catch (err) { throw new Error('Existing manifest is not valid JSON.'); }
           }
           if (!Array.isArray(manifest.insights)) manifest.insights = [];
-          manifest.insights.unshift(entry);
+          if (editing) {
+            var i = findEntryIndex(manifest.insights, editingOriginal);
+            if (i < 0) i = (editIndex >= 0 && editIndex < manifest.insights.length) ? editIndex : -1;
+            if (i >= 0) manifest.insights[i] = entry; else manifest.insights.unshift(entry);
+          } else {
+            manifest.insights.unshift(entry);
+          }
           manifest.updated = new Date().toISOString().slice(0, 10);
           manifest.version = manifest.version || 1;
           logLine('Updating manifest (' + manifest.insights.length + ' insights)…');
           var content = utf8ToBase64(JSON.stringify(manifest, null, 2) + '\n');
-          return putFile(MANIFEST_PATH, content, 'admin: publish "' + title + '"', sha);
+          return putFile(MANIFEST_PATH, content, (editing ? 'admin: edit "' : 'admin: publish "') + title + '"', sha);
+        })
+        .then(function () {
+          var cleanups = [];
+          if (imageFile && isLocalAsset(oldImg) && oldImg !== newImgPath) cleanups.push(deleteFile(oldImg, 'admin: remove replaced image'));
+          if (pdfFile && isLocalAsset(oldPdf) && oldPdf !== newPdfPath) cleanups.push(deleteFile(oldPdf, 'admin: remove replaced PDF'));
+          return Promise.all(cleanups);
         })
         .then(function () {
           logLine('Done.');
-          setStatus('✓ Published "' + title + '". It will appear on the Insights page within about a minute.', 'ok');
-          $('form').reset();
-          var today = new Date(); $('date').value = today.toISOString().slice(0, 10);
-          loadCategories();
+          setStatus((editing ? '✓ Saved changes to "' : '✓ Published "') + title + '". Live within about a minute.', 'ok');
+          cancelEdit();
+          loadCategories(); loadInsights();
         })
         .catch(function (err) {
           logLine('ERROR: ' + err.message);
           setStatus('✗ ' + err.message, 'err');
         })
         .then(function () { $('submit').disabled = false; });
+    }
+
+    // ---------- delete ----------
+    function deleteInsight(idx) {
+      if (!token) { setStatus('Save a token first.', 'err'); return; }
+      var it = currentItems[idx]; if (!it) return;
+      if (!window.confirm('Delete "' + (it.title || 'this insight') + '"?\nThis removes it from the website.')) return;
+      Array.prototype.forEach.call($('manageList').querySelectorAll('button'), function (b) { b.disabled = true; });
+      setStatus('Deleting…', '');
+      getFileSha(MANIFEST_PATH)
+        .then(function (meta) {
+          var manifest = { version: 1, updated: '', insights: [] };
+          var sha = null;
+          if (meta && meta.content) {
+            sha = meta.sha;
+            try { manifest = JSON.parse(base64ToUtf8(meta.content)); } catch (err) { throw new Error('Existing manifest is not valid JSON.'); }
+          }
+          if (!Array.isArray(manifest.insights)) manifest.insights = [];
+          var i = findEntryIndex(manifest.insights, it);
+          if (i < 0) i = (idx >= 0 && idx < manifest.insights.length) ? idx : -1;
+          if (i < 0) throw new Error('Could not locate this insight in the manifest.');
+          manifest.insights.splice(i, 1);
+          manifest.updated = new Date().toISOString().slice(0, 10);
+          var content = utf8ToBase64(JSON.stringify(manifest, null, 2) + '\n');
+          return putFile(MANIFEST_PATH, content, 'admin: delete "' + (it.title || '') + '"', sha);
+        })
+        .then(function () {
+          var cleanups = [];
+          if (isLocalAsset(it.image)) cleanups.push(deleteFile(it.image, 'admin: remove image for deleted insight'));
+          if (isLocalAsset(it.pdf)) cleanups.push(deleteFile(it.pdf, 'admin: remove PDF for deleted insight'));
+          return Promise.all(cleanups);
+        })
+        .then(function () {
+          setStatus('✓ Deleted "' + (it.title || '') + '".', 'ok');
+          if (editIndex === idx) cancelEdit();
+          loadCategories(); loadInsights();
+        })
+        .catch(function (err) { setStatus('✗ ' + err.message, 'err'); loadInsights(); });
     }
 
     // ---------- wire up ----------
@@ -383,12 +551,14 @@
       token = ''; localStorage.removeItem(TOKEN_KEY); $('token').value = '';
       setTokenState('', 'Token cleared from this browser.');
     });
+    $('cancelEdit').addEventListener('click', cancelEdit);
     $('form').addEventListener('submit', publish);
 
     // init
-    var today = new Date(); $('date').value = today.toISOString().slice(0, 10);
+    $('date').value = new Date().toISOString().slice(0, 10);
     if (token) { $('token').value = token; verifyToken(); }
     loadCategories();
+    loadInsights();
   })();
   </script>
 </body>
